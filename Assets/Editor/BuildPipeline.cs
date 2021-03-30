@@ -44,7 +44,7 @@ public class Windows64Builder : MonoBehaviour
     private static void Windows64()
     {
         buildPlayerOptions.target = BuildTarget.StandaloneWindows64;
-        buildPlayerOptions.locationPathName = "builds/Windows_64bit/" + GetTime();
+        buildPlayerOptions.locationPathName = "builds/Windows_64bit/Windows64x_" + GetTime();
 
         Build();
     }
@@ -52,7 +52,7 @@ public class Windows64Builder : MonoBehaviour
     private static void Windows32()
     {
         buildPlayerOptions.target = BuildTarget.StandaloneWindows;
-        buildPlayerOptions.locationPathName = "builds/Windows_32bit/" + GetTime();
+        buildPlayerOptions.locationPathName = "builds/Windows_32bit/Windows32x_" + GetTime();
 
         Build();
     }
@@ -60,7 +60,7 @@ public class Windows64Builder : MonoBehaviour
     private static void WebGL()
     {
         buildPlayerOptions.target = BuildTarget.WebGL;
-        buildPlayerOptions.locationPathName = "builds/WebGL/" + GetTime();
+        buildPlayerOptions.locationPathName = "builds/WebGL/WebGL_" + GetTime();
 
         Build();
     }
