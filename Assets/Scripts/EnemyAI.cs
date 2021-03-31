@@ -14,7 +14,7 @@ public class EnemyAI : MonoBehaviour
     private NavMeshAgent agent;
 
     //[SerializeField]
-    //private Animator EnemyAnim;
+    //private Animator enemyAnim;
 
     [SerializeField]
     private float _sightDistance,
@@ -40,7 +40,8 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 walkpoint;
 
-    public static bool foundPlayer;
+    public static bool foundPlayer,
+                       foundBody;
 
     //[SerializeField]
     //private Vector3[] checkpoints;
@@ -60,7 +61,7 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
-        //EnemyAnim = GetComponent<Animator>();
+        //enemyAnim = GetComponent<Animator>();
         
         //StartCoroutine(Checkpoint());
     }
@@ -114,7 +115,7 @@ public class EnemyAI : MonoBehaviour
                 playerInsideRange = Physics.CheckSphere(transform.position, _sightDistance, whatIsPlayer);
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
                 if (!EnemyFov.isInFov) { agent.autoBraking = false; }
-                //if ()  Patroling();
+                if (foundBody) Patroling();
                 if (!playerInsideRange && !foundPlayer) EnemyFov.isInFov = false;
                 if (EnemyFov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
@@ -132,7 +133,7 @@ public class EnemyAI : MonoBehaviour
             default:
                 break;
         }
-        if (!agent.pathPending && agent.remainingDistance < 0.5f)
+        if (!agent.pathPending && agent.remainingDistance < 0.5f && !foundBody)
             Checkpoints();
     }
 
@@ -145,15 +146,14 @@ public class EnemyAI : MonoBehaviour
         // Set the agent to go to the currently selected destination.
         agent.destination = points[destPoint];
 
-        // Choose the next point in the array as the destination,
-        // cycling to the start if necessary.
+        // Choose the next point in the array as the destination
         destPoint = (destPoint + 1) % points.Length;
     }
 
     public void Patroling()
     {
         agent.speed = walkSpeed;
-        //guardAnim.Play("Walking");
+        //enemyAnim.Play("Walking");
 
 
         if (!walkpointSet) SearchWalkPoint();
@@ -187,7 +187,7 @@ public class EnemyAI : MonoBehaviour
         else { foundPlayer = false; EnemyFov.isInFov = false; }
         agent.speed = runSpeed;
         agent.SetDestination(player.position);
-        // guardAnim.Play("Running");
+        // enemyAnim.Play("Running");
         //SoundManager.audioSource.volume = 1;
         //if (SoundManager.audioSource.isPlaying == false && foundPlayer == true)
         //{
@@ -198,6 +198,8 @@ public class EnemyAI : MonoBehaviour
         //    SoundManager.audioSource.Stop();
         //}
 
+
+        //TO DO: set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
             Attacking();
@@ -207,7 +209,7 @@ public class EnemyAI : MonoBehaviour
 
     public void Attacking()
     {
-
+        //TO DO: Let the enemy shoot with a weapon towards the player
     }
 }
 

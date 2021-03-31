@@ -7,6 +7,9 @@ public class EnemyFov : MonoBehaviour
     [SerializeField]
     private Transform player;
 
+    [SerializeField]
+    private Transform[] body;
+
     [Range(0, 180)]
     [SerializeField]
     private float maxAngle, alertAngle;
@@ -20,7 +23,7 @@ public class EnemyFov : MonoBehaviour
                   foundPlayerAngle,
                   originalRadius,
                   originalAngle,
-                  heightMultiplayer = 1.5f;
+                  heightMultiplayer;
 
     public static bool isInFov = false;
 
@@ -87,6 +90,7 @@ public class EnemyFov : MonoBehaviour
 
         RaycastHit hit;
 
+        //Max radius frontal vision AI
         if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (target.position - checkingObject.position).normalized, out hit, maxRadius))
         {
             if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
@@ -101,16 +105,7 @@ public class EnemyFov : MonoBehaviour
                 else if (inAlertFOV == false) isInFov = false;
             }
         }
-    }
-
-    //check if the player is in the Alert Zone/Fov
-    public void InAlertFov(Transform checkingObject, Transform target, float alertAngle, float alertRadius)
-    {
-        Vector3 directionBetween = (target.position - checkingObject.position).normalized;
-        directionBetween.y *= 0;
-
-        RaycastHit hit;
-
+        //Alert radius back vision AI
         if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (target.position - checkingObject.position).normalized, out hit, alertRadius))
         {
             if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
@@ -125,9 +120,30 @@ public class EnemyFov : MonoBehaviour
                 else if (inFOV == false) isInFov = false;
             }
         }
+
+        // TO DO: When an enemy dies add his dead body transform to the body array
+        for (int i = 0; i < body.Length; i++)
+        {
+            Vector3 directionBetween1 = (body[i].position - checkingObject.position).normalized;
+            directionBetween1.y *= 0;
+
+            if (Physics.Raycast(checkingObject.position + Vector3.up, (body[i].position - checkingObject.position).normalized, out hit, maxRadius))
+            {
+                if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "DeadEnemy")
+                {
+                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up, directionBetween1);
+
+                    if (angle <= maxAngle)
+                    {
+                        EnemyAI.foundBody = true;
+                    }
+                }
+            }
+        }
     }
 
-    private void RotatePlayer()
+
+        private void RotatePlayer()
     {
         Vector3 direction = transform.forward * 3.5f;
         RaycastHit hit;
@@ -149,7 +165,6 @@ public class EnemyFov : MonoBehaviour
     {
         print(checkObject);
         RotatePlayer();
-        InAlertFov(transform, player, alertAngle, alertRadius);
         InFOV(transform, player, maxAngle, maxRadius);
         if (isInFov && EnemyAI.foundPlayer)
         {
