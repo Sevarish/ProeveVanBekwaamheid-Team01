@@ -188,15 +188,6 @@ public class EnemyAI : MonoBehaviour
         agent.speed = runSpeed;
         agent.SetDestination(player.position);
         // enemyAnim.Play("Running");
-        //SoundManager.audioSource.volume = 1;
-        //if (SoundManager.audioSource.isPlaying == false && foundPlayer == true)
-        //{
-        //    SoundManager.PlaySound("ChasingMusic");
-        //}
-        //else if (SoundManager.audioSource.isPlaying == true && foundPlayer == false)
-        //{
-        //    SoundManager.audioSource.Stop();
-        //}
 
 
         //TO DO: set the variable for the playerInsideAttackRange in the editor

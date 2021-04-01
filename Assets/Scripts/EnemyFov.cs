@@ -83,7 +83,7 @@ public class EnemyFov : MonoBehaviour
     }
 
     //check if the player is in the Fov
-    public void InFOV(Transform checkingObject, Transform target, float maxAngle, float maxRadius)
+    public void InFOV(Transform checkingObject, Transform target, float maxAngle, float maxRadius, float alertRadius)
     {
         Vector3 directionBetween = (target.position - checkingObject.position).normalized;
         directionBetween.y *= 0;
@@ -98,7 +98,7 @@ public class EnemyFov : MonoBehaviour
                 float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, directionBetween);
 
                 if (angle <= maxAngle)
-                {   
+                {
                     isInFov = true;
                     inFOV = true;
                 }
@@ -124,14 +124,14 @@ public class EnemyFov : MonoBehaviour
         // TO DO: When an enemy dies add his dead body transform to the body array
         for (int i = 0; i < body.Length; i++)
         {
-            Vector3 directionBetween1 = (body[i].position - checkingObject.position).normalized;
-            directionBetween1.y *= 0;
+            Vector3 dirBetween = (body[i].position - checkingObject.position).normalized;
+            dirBetween.y *= 0;
 
-            if (Physics.Raycast(checkingObject.position + Vector3.up, (body[i].position - checkingObject.position).normalized, out hit, maxRadius))
+            if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (body[i].position - checkingObject.position).normalized, out hit, maxRadius))
             {
                 if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "DeadEnemy")
                 {
-                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up, directionBetween1);
+                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetween);
 
                     if (angle <= maxAngle)
                     {
@@ -140,6 +140,9 @@ public class EnemyFov : MonoBehaviour
                 }
             }
         }
+
+        // TO DO: make that when you have an angry Enemy AI in your Fov that you'll chase the angry AI
+        //        and when you see the player in your Fov that you'll chase the player
     }
 
 
@@ -165,7 +168,7 @@ public class EnemyFov : MonoBehaviour
     {
         print(checkObject);
         RotatePlayer();
-        InFOV(transform, player, maxAngle, maxRadius);
+        InFOV(transform, player, maxAngle, maxRadius, alertRadius);
         if (isInFov && EnemyAI.foundPlayer)
         {
             maxAngle = foundPlayerAngle;
