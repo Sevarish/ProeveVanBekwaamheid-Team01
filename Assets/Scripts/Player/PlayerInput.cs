@@ -12,6 +12,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
     public float sensitivity = 20; //Sensitivity of aiming with the controller
 
+    [SerializeField]
+    private int groundLayer = 7;
+
     //Keyboard/Mouse
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
@@ -48,8 +51,8 @@ public class PlayerInput : MonoBehaviour
     private void Aim()
     {
         //Create and invert the layermask.
-        int layerMask = 1 << 6;
-        layerMask = ~layerMask;
+        int layerMask = 1 << groundLayer;
+        //layerMask = ~layerMask;
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
         RaycastHit hit;
