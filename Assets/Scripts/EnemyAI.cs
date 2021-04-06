@@ -5,8 +5,7 @@ using UnityEngine.AI;
 public enum EnemyState
 {
     patrolling = 0,
-    rotating = 1,
-    finishedPatrolling = 2
+    checkpoints = 1,
 };
 public class EnemyAI : MonoBehaviour
 {
@@ -25,7 +24,8 @@ public class EnemyAI : MonoBehaviour
 
     [SerializeField]
     private bool playerInsideRange,
-                 playerInsideAttackRange;
+                 playerInsideAttackRange,
+                 alreadyAttacked;
 
     [SerializeField]
     private Transform player;
@@ -40,73 +40,25 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 walkpoint;
 
-    public static bool foundPlayer,
-                       foundBody;
+    public bool foundPlayer,
+                foundBody;
 
-    //[SerializeField]
-    //private Vector3[] checkpoints;
-
-    //[SerializeField]
-    //private float[] checkpointSpeed;
-
-
-    //[SerializeField]
-    //private float travelDuration = 1f,
-    //                        wait = 1f;
+    // already added for the damaging/death system
+    private int health, damage;
 
     public Vector3[] points;
     private int destPoint = 0;
+
+    public EnemyFov Fov;
 
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        Fov = GetComponent<EnemyFov>();
         //enemyAnim = GetComponent<Animator>();
-        
-        //StartCoroutine(Checkpoint());
     }
 
-    //private IEnumerator Checkpoint()
-    //{
-    //    // Loop 
-    //    while (Application.isPlaying)
-    //    {
-
-    //        for (int i = 0; i < checkpoints.Length; i++)
-    //        {
-    //            //Travel from 1 to 2
-    //            checkpointSpeed[i] = 0f;
-    //            while (checkpointSpeed[i] < travelDuration)
-    //            {
-    //                transform.position = Vector3.Lerp(checkpoints[i], checkpoints[i + 1], checkpointSpeed[i] / travelDuration % checkpoints.Length);
-    //                checkpointSpeed[i] += Time.deltaTime;
-    //                yield return null;
-    //            }
-
-    //            // In case the counter isn't equal to the travelDuration
-    //            transform.position = checkpoints[i + 1 % checkpoints.Length];
-
-    //            // wait
-    //            yield return new WaitForSeconds(wait);
-
-    //            //Travel from 1 to 2
-    //            checkpoints[i] = checkpoints[0];
-    //            checkpointSpeed[i] = 0f;
-    //            while (checkpointSpeed[i] < travelDuration)
-    //            {
-    //                transform.position = Vector3.Lerp(checkpoints[3], checkpoints[i], checkpointSpeed[i] / travelDuration);
-    //                checkpointSpeed[i] += Time.deltaTime;
-    //                yield return null;
-    //            }
-
-    //            // In case the counter isn't equal to the travelDuration
-    //            transform.position = checkpoints[0];
-
-    //            // wait
-    //            yield return new WaitForSeconds(wait);
-    //        }
-    //    }
-    //}
     public void FixedUpdate()
     {
         switch (enemyState)
@@ -114,31 +66,35 @@ public class EnemyAI : MonoBehaviour
             case EnemyState.patrolling:
                 playerInsideRange = Physics.CheckSphere(transform.position, _sightDistance, whatIsPlayer);
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
-                if (!EnemyFov.isInFov) { agent.autoBraking = false; }
+                //if (!EnemyFov.isInFov) {  }
                 if (foundBody) Patroling();
-                if (!playerInsideRange && !foundPlayer) EnemyFov.isInFov = false;
-                if (EnemyFov.isInFov) ChasePlayer();
+                if (!playerInsideRange && !foundPlayer) Fov.isInFov = false;
+                if (Fov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
                 break;
-            case EnemyState.rotating:
-                agent.isStopped = true;
-                transform.Rotate(Vector3.up * 100 * Time.deltaTime, Space.Self);
+            // TO DO:
+            // set the checkpoint function as a state
+
+            case EnemyState.checkpoints:
                 break;
-            case EnemyState.finishedPatrolling:
-                transform.Rotate(Vector3.up * 20 * Time.deltaTime, Space.Self);
-                walkpointSet = false;
-                agent.isStopped = false;
-                enemyState = EnemyState.patrolling;
-                break;
+                // NOTE:
+                // deleted the rotating and finished patrolling state
+                // had both to prevent that the enemy gets stuck on a corner.
+                // now when his speed is under a certain value he will choose a new path.
             default:
                 break;
         }
+
         if (!agent.pathPending && agent.remainingDistance < 0.5f && !foundBody)
             Checkpoints();
     }
 
     public void Checkpoints()
     {
+        // TO DO:
+        // Add Walking animation
+        //enemyAnim.Play("Walking");
+
         // Returns if no points have been set up
         if (points.Length == 0)
             return;
@@ -153,7 +109,10 @@ public class EnemyAI : MonoBehaviour
     public void Patroling()
     {
         agent.speed = walkSpeed;
-        //enemyAnim.Play("Walking");
+
+        // TO DO:
+        // Add patrolling animation
+        //enemyAnim.Play("Patroling");
 
 
         if (!walkpointSet) SearchWalkPoint();
@@ -183,14 +142,15 @@ public class EnemyAI : MonoBehaviour
             //SoundManager.PlaySound("Shout");
         }
         foundPlayer = true;
-        if (playerInsideRange) EnemyFov.isInFov = true;
-        else { foundPlayer = false; EnemyFov.isInFov = false; }
+        if (playerInsideRange) Fov.isInFov = true;
+        else { foundPlayer = false; Fov.isInFov = false; }
         agent.speed = runSpeed;
         agent.SetDestination(player.position);
         // enemyAnim.Play("Running");
 
 
-        //TO DO: set the variable for the playerInsideAttackRange in the editor
+        //TO DO: 
+        //set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
             Attacking();
@@ -200,7 +160,35 @@ public class EnemyAI : MonoBehaviour
 
     public void Attacking()
     {
-        //TO DO: Let the enemy shoot with a weapon towards the player
+        float timeBetweenAttacks = 1f;
+        //TO DO: 
+        //Let the enemy shoot with a weapon towards the player
+        if (!alreadyAttacked)
+        {
+            // TO DO:
+            // Add here the part that you can attack
+
+            alreadyAttacked = true;
+            Invoke(nameof(ResetAttack), timeBetweenAttacks);
+        }
+    }
+
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
+    }
+
+    private void TakeDamage()
+    {
+        health -= damage;
+
+        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
+    }
+
+    private void DestroyEnemy()
+    {
+        Destroy(gameObject);
+        // add here the part where the death body will be dropped at the death of the enemy
     }
 }
 
