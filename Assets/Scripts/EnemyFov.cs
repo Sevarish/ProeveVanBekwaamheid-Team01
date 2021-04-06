@@ -26,21 +26,22 @@ public class EnemyFov : MonoBehaviour
                   originalAngle,
                   heightMultiplayer;
 
-    public static bool isInFov = false;
+    public bool isInFov = false;
 
     private bool checkObject;
 
     private bool inFOV = false,
                  inAlertFOV = false;
 
-    private EnemyAI guardBehaviorScript;
+    public EnemyAI AI;
+
     public void Awake()
     {
-        guardBehaviorScript = GetComponent<EnemyAI>();
+        AI = GetComponent<EnemyAI>();
     }
     public void OnDrawGizmos()
     {
-        if (isInFov && EnemyAI.foundPlayer)
+        if (isInFov && AI.foundPlayer)
         {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, foundPlayerRadius);
@@ -55,7 +56,7 @@ public class EnemyFov : MonoBehaviour
 
         Vector3 fovLine1 = Quaternion.AngleAxis(maxAngle, transform.up) * transform.forward * maxRadius;
         Vector3 fovLine2 = Quaternion.AngleAxis(-maxAngle, transform.up) * transform.forward * maxRadius;
-
+        
         Vector3 fovLine3 = Quaternion.AngleAxis(alertAngle, transform.up) * -transform.forward * alertRadius;
         Vector3 fovLine4 = Quaternion.AngleAxis(-alertAngle, transform.up) * -transform.forward * alertRadius;
 
@@ -136,7 +137,7 @@ public class EnemyFov : MonoBehaviour
 
                     if (angle <= maxAngle)
                     {
-                        EnemyAI.foundBody = true;
+                        AI.foundBody = true;
                     }
                 }
             }
@@ -171,7 +172,7 @@ public class EnemyFov : MonoBehaviour
     {
         print(checkObject);
         InFOV(transform, player, maxAngle, maxRadius, alertRadius);
-        if (isInFov && EnemyAI.foundPlayer)
+        if (isInFov && AI.foundPlayer)
         {
             maxAngle = foundPlayerAngle;
             maxRadius = foundPlayerRadius;

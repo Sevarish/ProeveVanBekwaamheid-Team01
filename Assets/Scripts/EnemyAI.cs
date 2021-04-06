@@ -40,8 +40,8 @@ public class EnemyAI : MonoBehaviour
 
     private Vector3 walkpoint;
 
-    public static bool foundPlayer,
-                       foundBody;
+    public bool foundPlayer,
+                foundBody;
 
     // already added for the damaging/death system
     private int health, damage;
@@ -49,10 +49,13 @@ public class EnemyAI : MonoBehaviour
     public Vector3[] points;
     private int destPoint = 0;
 
+    public EnemyFov Fov;
+
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
+        Fov = GetComponent<EnemyFov>();
         //enemyAnim = GetComponent<Animator>();
     }
 
@@ -65,8 +68,8 @@ public class EnemyAI : MonoBehaviour
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
                 //if (!EnemyFov.isInFov) {  }
                 if (foundBody) Patroling();
-                if (!playerInsideRange && !foundPlayer) EnemyFov.isInFov = false;
-                if (EnemyFov.isInFov) ChasePlayer();
+                if (!playerInsideRange && !foundPlayer) Fov.isInFov = false;
+                if (Fov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
                 break;
             // TO DO:
@@ -139,8 +142,8 @@ public class EnemyAI : MonoBehaviour
             //SoundManager.PlaySound("Shout");
         }
         foundPlayer = true;
-        if (playerInsideRange) EnemyFov.isInFov = true;
-        else { foundPlayer = false; EnemyFov.isInFov = false; }
+        if (playerInsideRange) Fov.isInFov = true;
+        else { foundPlayer = false; Fov.isInFov = false; }
         agent.speed = runSpeed;
         agent.SetDestination(player.position);
         // enemyAnim.Play("Running");
