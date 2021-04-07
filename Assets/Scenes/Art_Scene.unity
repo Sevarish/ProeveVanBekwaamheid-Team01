@@ -132,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
       propertyPath: m_RootOrder
-      value: 8
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
       propertyPath: m_LocalPosition.x
@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c4d1464558413e74597bfee5c30b2626, type: 2}
     - target: {fileID: -8679921383154817045, guid: 1b90e942cfd259c4d9b3603cc9fd9aa8, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 1b90e942cfd259c4d9b3603cc9fd9aa8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -450,7 +450,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 2c84c9aa14c333a42924c724f4c12620, type: 3}
       propertyPath: m_RootOrder
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2c84c9aa14c333a42924c724f4c12620, type: 3}
       propertyPath: m_LocalPosition.x
@@ -515,7 +515,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 977742450c5ebf84589b9a652c44bc24, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 977742450c5ebf84589b9a652c44bc24, type: 3}
       propertyPath: m_LocalPosition.x
@@ -677,7 +677,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
       propertyPath: m_LocalPosition.x
@@ -723,6 +723,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Stairs
       objectReference: {fileID: 0}
+    - target: {fileID: 1616401001422935417, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 36716c9c9727b3740934bbef6aab778e, type: 2}
+    - target: {fileID: 1741321488438997833, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 36716c9c9727b3740934bbef6aab778e, type: 2}
+    - target: {fileID: 7210471491888859255, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 36716c9c9727b3740934bbef6aab778e, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c77b5ca4566bdb842987eab63dcfb983, type: 3}
 --- !u!1 &2073220067
