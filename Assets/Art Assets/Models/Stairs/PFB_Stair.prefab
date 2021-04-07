@@ -173,7 +173,7 @@ GameObject:
   - component: {fileID: 8980327910351186603}
   - component: {fileID: 680175798339622704}
   m_Layer: 0
-  m_Name: Stairs
+  m_Name: PFB_Stair
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -188,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 5403142523375114424}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.6739569, y: -0.23516703, z: 0.24528882}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.01, y: 0.01, z: 0.01}
   m_Children:
   - {fileID: 3582682525511308344}
   - {fileID: 4896708766319422217}
