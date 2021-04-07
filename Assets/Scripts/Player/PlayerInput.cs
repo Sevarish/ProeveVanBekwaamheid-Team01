@@ -105,7 +105,7 @@ public class PlayerInput : MonoBehaviour
 
     private void Interact()
     {
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, interactRange);
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, playerVisual.transform.forward, interactRange);
         
         foreach (RaycastHit hit in hits)
         {
