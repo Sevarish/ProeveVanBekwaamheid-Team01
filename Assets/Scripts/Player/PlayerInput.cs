@@ -15,6 +15,12 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     private int groundLayer = 7;
 
+    [SerializeField]
+    private float interactRange = 4;
+
+    [SerializeField]
+    private KeyCode interactButton = KeyCode.Space;
+
     //Keyboard/Mouse
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
@@ -38,6 +44,11 @@ public class PlayerInput : MonoBehaviour
         {
             MoveController();
             AimController();
+        }
+
+        if (Input.GetKeyDown(interactButton))
+        {
+            Interact();
         }
     }
     //MOUSE AND KEYBOARD
@@ -90,5 +101,15 @@ public class PlayerInput : MonoBehaviour
         Vector3 newDirection = Vector3.RotateTowards(playerVisual.transform.forward, tarDir, 1, 0.0f);
         playerVisual.transform.rotation = Quaternion.LookRotation(newDirection);
         playerVisual.transform.localEulerAngles = new Vector3(0, playerVisual.transform.localEulerAngles.y, 0);
+    }
+
+    private void Interact()
+    {
+        RaycastHit[] hits = Physics.RaycastAll(transform.position, transform.forward, interactRange);
+        
+        foreach (RaycastHit hit in hits)
+        {
+            hit.transform.gameObject.GetComponent<Interactable>()?.Interact(transform);
+        }
     }
 }
