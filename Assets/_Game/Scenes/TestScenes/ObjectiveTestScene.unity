@@ -570,6 +570,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
+      propertyPath: gameTimer
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: textBeforeCounter
       value: 'Hostages: '
       objectReference: {fileID: 0}
