@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-
+using System;
 
 public class ObjectiveManager : MonoBehaviour
 {
-    public TMP_Text hostageCounter;
+    public TMP_Text hostageCounterText;
+    public TMP_Text gameTimerText;
     private Hostage[] hostages;
-    public string textBeforeCounter;
+    public string textBeforeHostageCounter;
+    public string textBeforeGameTimer;
+    public float gameTimer = 90;
     private int amountOfHostages;
     private int savedHostages;
+    public Action GameOver;
+    public Action GameWon;
 
     private void Start()
     {
@@ -20,6 +25,8 @@ public class ObjectiveManager : MonoBehaviour
             hostage.SavedHostage += OnSaved;
         }
         amountOfHostages = hostages.Length;
+        StartCoroutine(ReduceGameTime());
+        GameOver += RestartLevel;
     }
 
     private void OnSaved()
@@ -29,6 +36,26 @@ public class ObjectiveManager : MonoBehaviour
 
     private void Update()
     {
-        hostageCounter.text = textBeforeCounter + savedHostages + "/" + amountOfHostages;
+        hostageCounterText.text = textBeforeHostageCounter + savedHostages + "/" + amountOfHostages;
+        if (savedHostages == amountOfHostages)
+        {
+            GameWon?.Invoke();
+        }
+    }
+
+    private IEnumerator ReduceGameTime()
+    {
+        while(gameTimer >= 0)
+        {
+            gameTimer -= 0.1f;
+            gameTimerText.text = textBeforeGameTimer + Mathf.Round(gameTimer);
+            yield return new WaitForSeconds(0.1f);
+        }
+        GameOver?.Invoke();
+    }
+
+    private void RestartLevel()
+    {
+        Application.LoadLevel(Application.loadedLevel);
     }
 }
