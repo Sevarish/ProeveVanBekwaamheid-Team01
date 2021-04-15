@@ -8,8 +8,10 @@ public class EnemyFov : MonoBehaviour
     private Transform player;
 
     [SerializeField]
-    private Transform[] corpse,
-                        enemies;
+    private Transform[] enemies;
+
+    [SerializeField]
+    private List<Transform> corpse;
 
     [Range(0, 180)]
     [SerializeField]
@@ -33,11 +35,17 @@ public class EnemyFov : MonoBehaviour
     private bool inFOV = false,
                  inAlertFOV = false;
 
-    public EnemyAI AI;
+    private EnemyAI AI;
+
+    public bool dropBody;
+
+    [SerializeField]
+    private GameObject body;
 
     public void Awake()
     {
         AI = GetComponent<EnemyAI>();
+        AI.EnemyDeath += DropBody;
     }
     public void OnDrawGizmos()
     {
@@ -98,13 +106,16 @@ public class EnemyFov : MonoBehaviour
             if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
             {
                 float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, directionBetween);
-
+                float radius = maxRadius + 1f;
                 if (angle <= maxAngle)
                 {
                     isInFov = true;
-                    inFOV = true;
-                }
-                else if (inAlertFOV == false) isInFov = false;
+                    inAlertFOV = true;
+                    AI.alertedPatrolling = true;
+                    gameObject.layer = 9;
+                } else if (angle >= radius) { inAlertFOV = false; gameObject.layer = 0;}
+
+                if (inAlertFOV == false) isInFov = false;
             }
         }
         //Alert radius back vision AI
@@ -113,38 +124,40 @@ public class EnemyFov : MonoBehaviour
             if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "Player")
             {
                 float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, -directionBetween);
-
+                float radius = maxRadius + 1f;
                 if (angle <= alertAngle)
                 {
                     isInFov = true;
-                    inAlertFOV = true;
-                }
-                else if (inFOV == false) isInFov = false;
+                    inFOV = true;
+                    AI.alertedPatrolling = true;
+                    gameObject.layer = 9;
+                }else if (angle >= radius) { inFOV = false; gameObject.layer = 0;}
+
+                if (inFOV == false) isInFov = false;
             }
         }
 
         // TO DO: When an enemy dies add his dead body transform to the body array
-        for (int i = 0; i < corpse.Length; i++)
-        {
-            Vector3 dirBetween = (corpse[i].position - checkingObject.position).normalized;
-            dirBetween.y *= 0;
-
+        //for (int i = 0; i < corpse.Count; i++)
+        //{
+            Vector3 dirBetweenTest = (corpse[i].position - checkingObject.position).normalized;
+            dirBetweenTest.y *= 0;
+            
             if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (corpse[i].position - checkingObject.position).normalized, out hit, maxRadius))
             {
                 if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "DeadEnemy")
                 {
-                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetween);
+                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetweenTest);
 
                     if (angle <= maxAngle)
                     {
-                        AI.foundBody = true;
+                        AI.alertedPatrolling = true;
                     }
                 }
             }
-        }
+        //}
 
-        // TO DO: make that when you have an angry Enemy AI in your Fov that you'll chase the angry AI
-        //        and when you see the player in your Fov that you'll chase the player
+        // TO DO: make that when you have an angry Enemy AI in your Fov that you'll chase player
 
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -156,15 +169,27 @@ public class EnemyFov : MonoBehaviour
                 if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "ChasingEnemy")
                 {
                     float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetween);
+                    float radius = maxRadius + 1f;
 
                     if (angle <= maxAngle)
                     {
-                        print("rheee");
+                        print("Bing Bong");
                         isInFov = true;
                         inAlertFOV = true;
-                    }
+                        gameObject.layer = 9;
+                        AI.alertedPatrolling = true;
+                    } else if (angle >= radius) { inFOV = false; gameObject.layer = 0; }
                 }
             }
+        }
+    }
+
+    public void DropBody()
+    {
+        if (dropBody)
+        {
+            Instantiate(body, transform.position, Quaternion.identity);
+            corpse.Add(body.transform);
         }
     }
 

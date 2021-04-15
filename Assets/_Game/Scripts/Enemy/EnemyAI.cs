@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
@@ -41,7 +42,7 @@ public class EnemyAI : MonoBehaviour
     private Vector3 walkpoint;
 
     public bool foundPlayer,
-                foundBody;
+                alertedPatrolling;
 
     // already added for the damaging/death system
     private int health, damage;
@@ -49,7 +50,9 @@ public class EnemyAI : MonoBehaviour
     public Vector3[] points;
     private int destPoint = 0;
 
-    public EnemyFov Fov;
+    private EnemyFov Fov;
+
+    public Action EnemyDeath;
 
     private void Awake()
     {
@@ -67,7 +70,7 @@ public class EnemyAI : MonoBehaviour
                 playerInsideRange = Physics.CheckSphere(transform.position, _sightDistance, whatIsPlayer);
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
                 //if (!EnemyFov.isInFov) {  }
-                if (foundBody) Patroling();
+                if (alertedPatrolling) Patroling();
                 if (!playerInsideRange && !foundPlayer) Fov.isInFov = false;
                 if (Fov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
@@ -85,7 +88,7 @@ public class EnemyAI : MonoBehaviour
                 break;
         }
 
-        if (!agent.pathPending && agent.remainingDistance < 0.5f && !foundBody)
+        if (!agent.pathPending && agent.remainingDistance < 0.5f && !alertedPatrolling)
             Checkpoints();
     }
 
@@ -126,8 +129,8 @@ public class EnemyAI : MonoBehaviour
 
     private void SearchWalkPoint()
     {
-        float randomX = Random.Range(-_walkpointRange, _walkpointRange);
-        float randomZ = Random.Range(-_walkpointRange, _walkpointRange);
+        float randomX = UnityEngine.Random.Range(-_walkpointRange, _walkpointRange);
+        float randomZ = UnityEngine.Random.Range(-_walkpointRange, _walkpointRange);
 
         walkpoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
 
@@ -153,6 +156,9 @@ public class EnemyAI : MonoBehaviour
         //set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
+            Fov.dropBody = true;
+            EnemyDeath?.Invoke();
+            gameObject.SetActive(false);
             Attacking();
         }
 
@@ -182,13 +188,7 @@ public class EnemyAI : MonoBehaviour
     {
         health -= damage;
 
-        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
-    }
-
-    private void DestroyEnemy()
-    {
-        Destroy(gameObject);
-        // add here the part where the death body will be dropped at the death of the enemy
+        //if (health <= 0) Invoke(nameof(Death), 0.5f);
     }
 }
 
