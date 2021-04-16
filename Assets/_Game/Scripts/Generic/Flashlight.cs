@@ -91,9 +91,16 @@ public class Flashlight : MonoBehaviour
         isTurnedOn = !isTurnedOn;
 
         if (isTurnedOn)
+        {
             light.enabled = true;
+            StopAllCoroutines();
+        }
+            
         if (!isTurnedOn)
+        {
             light.enabled = false;
+            StartCoroutine(WaitForRefill(3));
+        }
     }
 
     private void FollowMouse()
