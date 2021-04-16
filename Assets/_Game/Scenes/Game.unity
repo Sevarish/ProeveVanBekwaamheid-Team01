@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.25329876, g: 0.21698704, b: 0.23319143, a: 1}
+  m_IndirectSpecularColor: {r: 0.25330186, g: 0.21698852, b: 0.2331926, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6114,6 +6114,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLightKey: 101
   crossHair: {fileID: 2121395249}
+  batteryTimeLeft: 0
+  maxBatteryLife: 10
 --- !u!1 &1287634372 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1651746531246982094, guid: 7e5030db2bde1124dae98cfab0f2bd6a, type: 3}

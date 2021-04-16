@@ -12,19 +12,77 @@ public class Flashlight : MonoBehaviour
 
     private bool isTurnedOn = true;
     private new Light light;
+    [SerializeField]
+    private float batteryTimeLeft;
+    [SerializeField]
+    private float maxBatteryLife;
+
+    private bool isRecharging = false;
 
     private void Start()
     {
         light = GetComponent<Light>();
+
+        batteryTimeLeft = maxBatteryLife;
     }
 
     private void Update()
     {
         FollowMouse();
 
-        if (Input.GetKeyDown(flashLightKey))
+        if (Input.GetKeyDown(flashLightKey) && batteryTimeLeft > 0)
         {
             ToggleFlashLight();
+        }
+        if (isTurnedOn && batteryTimeLeft > 0)
+        {
+            UpdateBatteryLife();
+        }
+        if (Input.GetKeyDown(flashLightKey)) 
+        {
+            isRecharging = false;
+        }
+    }
+
+    private void UpdateBatteryLife()
+    {
+        batteryTimeLeft -= Time.deltaTime;
+        if (batteryTimeLeft <= 0)
+        {
+            // when battery is empty
+            isTurnedOn = false;
+            light.enabled = false;
+            batteryTimeLeft = 0;
+            StartCoroutine(WaitForRefill(3));
+        }
+    }
+
+    private IEnumerator WaitForRefill(int timeToWait)
+    {
+        yield return new WaitForSeconds(timeToWait);
+        isRecharging = true;
+        StartCoroutine(Refilling(0.25f));
+    }
+    private IEnumerator Refilling(float timeInBetweenTicks)
+    {
+        while(isRecharging)
+        {
+            yield return new WaitForSeconds(timeInBetweenTicks);
+
+            RefillBattery(1);
+            if (batteryTimeLeft >= maxBatteryLife)
+            {
+                StopAllCoroutines();
+            }
+        }
+    }
+
+    private void RefillBattery(int amount)
+    {
+        batteryTimeLeft += amount;
+        if (batteryTimeLeft > maxBatteryLife)
+        {
+            batteryTimeLeft = maxBatteryLife;
         }
     }
 
