@@ -13,6 +13,8 @@ public class Flashlight : MonoBehaviour
     private bool isTurnedOn = true;
     private new Light light;
     [SerializeField]
+    private int secondsBeforeStartingRefill;
+    [SerializeField]
     private float batteryTimeLeft;
     [SerializeField]
     private float maxBatteryLife;
@@ -53,7 +55,7 @@ public class Flashlight : MonoBehaviour
             isTurnedOn = false;
             light.enabled = false;
             batteryTimeLeft = 0;
-            StartCoroutine(WaitForRefill(3));
+            StartCoroutine(WaitForRefill(secondsBeforeStartingRefill));
         }
     }
 
@@ -99,7 +101,7 @@ public class Flashlight : MonoBehaviour
         if (!isTurnedOn)
         {
             light.enabled = false;
-            StartCoroutine(WaitForRefill(3));
+            StartCoroutine(WaitForRefill(secondsBeforeStartingRefill));
         }
     }
 

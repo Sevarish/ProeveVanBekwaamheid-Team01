@@ -6114,6 +6114,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLightKey: 101
   crossHair: {fileID: 2121395249}
+  secondsBeforeRefill: 3
   batteryTimeLeft: 0
   maxBatteryLife: 10
 --- !u!1 &1287634372 stripped
