@@ -8,10 +8,11 @@ public class Player : MonoBehaviour
     public float speed = 8.5f,
                  vision,
                  flashBatteryLife;
-    public List<BaseWeapon> weapons = new List<BaseWeapon>();
+    public AssaultRifle HK416;
+    public Taser X26;
     public bool Died;
     private GameObject visionCone;
-    private int currentWeapon;
+    public int currentWeapon; //0 is HK416, 1 is Taser
 
     void Start()
     {
@@ -30,17 +31,8 @@ public class Player : MonoBehaviour
 
     public void SwitchWeapon()
     {
-
-    }
-
-    public void SwitchWeapon(BaseWeapon weapon)
-    {
-
-    }
-
-    public BaseWeapon GetCurrentWeapon()
-    {
-        return weapons[currentWeapon];
+        if (currentWeapon == 0) { currentWeapon = 1; Debug.Log(currentWeapon); return; }
+        if (currentWeapon == 1) { currentWeapon = 0; Debug.Log(currentWeapon); return; }
     }
 
     public void ToggleFlashLight()

@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField]Player player; //The parent object of the entire player.
-    [SerializeField]GameObject playerVisual; //The visual part of the player which rotates.
+    [SerializeField] Player player; //The parent object of the entire player.
+    [SerializeField]
+    GameObject playerVisual; //The visual part of the player which rotates.
 
-    [SerializeField]GameObject targetPoint; //The object which the player will always rotate towards. AKA targetting point.
+    [SerializeField] GameObject targetPoint, //The object which the player will always rotate towards. AKA targetting point.
+                                playerEmitter; //The emit point for bullets and the taser projectiles.
 
-    [SerializeField]private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
+    [SerializeField] private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
     public float sensitivity = 20; //Sensitivity of aiming with the controller
 
     [SerializeField]
@@ -25,30 +27,54 @@ public class PlayerInput : MonoBehaviour
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
     moveUp = KeyCode.W,
-    moveDown = KeyCode.S;
+    moveDown = KeyCode.S,
+    switchWeapon = KeyCode.LeftControl;
     //Controller
     private readonly string conMoveSide = "LR", //Left Right for walking
     conMoveFrontBack = "FB", //Front Back for walking
     conAimLR = "AimLR", //Left Right for aiming
-    conAimFB = "AimFB"; //Front Back for aming
+    conAimFB = "AimFB", //Front Back for aming
+    interactKeyController = "InteractCon", //Key used for interacting
+    shootKeyController = "ShootCon"; //Key used for shooting 
 
     void Update()
     {
-        if (!controller) {
+        if (!controller)
+        { //When Mouse and Keyboard mode is active (Controller=talse)
             if (Input.GetKey(moveLeft)) { MoveLeft(); }
             if (Input.GetKey(moveRight)) { MoveRight(); }
             if (Input.GetKey(moveUp)) { MoveUp(); }
             if (Input.GetKey(moveDown)) { MoveDown(); }
             Aim();
-        } else
+
+            if (Input.GetKeyDown(switchWeapon))
+            {
+                player.SwitchWeapon();
+            }
+
+            if (Input.GetKeyDown(interactButton))
+            {
+                Interact();
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Shoot();
+            }
+        }
+        else //When controller mode is active (Controller=true)
         {
             MoveController();
             AimController();
-        }
+            if (Input.GetAxis(interactKeyController) > 0)
+            {
+                Interact();
+            }
 
-        if (Input.GetKeyDown(interactButton))
-        {
-            Interact();
+            if (Input.GetAxis(shootKeyController) > 0)
+            {
+                Shoot();
+            }
         }
     }
     //MOUSE AND KEYBOARD
@@ -63,14 +89,13 @@ public class PlayerInput : MonoBehaviour
     {
         //Create and invert the layermask.
         int layerMask = 1 << groundLayer;
-        //layerMask = ~layerMask;
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
         RaycastHit hit;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
         {
             targetPoint.transform.position = new Vector3(hit.point.x,
-                                                 hit.point.y + 1,
+                                                 playerEmitter.transform.position.y,
                                                  hit.point.z);
         }
 
@@ -83,7 +108,8 @@ public class PlayerInput : MonoBehaviour
 
     //CONTROLLER
     //Movement for Controller input. Will run when controller is true.
-    private void MoveController() {
+    private void MoveController()
+    {
         player.transform.Translate(Input.GetAxis(conMoveSide) * player.speed * Time.deltaTime,
                                    0,
                                    -Input.GetAxis(conMoveFrontBack) * player.speed * Time.deltaTime);
@@ -103,10 +129,23 @@ public class PlayerInput : MonoBehaviour
         playerVisual.transform.localEulerAngles = new Vector3(0, playerVisual.transform.localEulerAngles.y, 0);
     }
 
+    //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
+    private void Shoot()
+    {
+        if (player.currentWeapon == 0)
+        {
+            player.HK416.Shoot(); //Assault Rifle
+        } else
+        {
+            player.X26.Shoot(); //Taser 
+        }
+    }
+
+    //The general function to interact with interactable objects within range (interactRange).
     private void Interact()
     {
         RaycastHit[] hits = Physics.RaycastAll(transform.position, playerVisual.transform.forward, interactRange);
-        
+
         foreach (RaycastHit hit in hits)
         {
             hit.transform.gameObject.GetComponent<Interactable>()?.Interact(transform);

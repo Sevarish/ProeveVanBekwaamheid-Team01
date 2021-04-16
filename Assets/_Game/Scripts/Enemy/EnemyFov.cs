@@ -170,7 +170,6 @@ public class EnemyFov : MonoBehaviour
 
     public void FixedUpdate()
     {
-
         InFOV(transform, player, maxAngle, maxRadius, alertRadius);
         if (isInFov && AI.foundPlayer)
         {
