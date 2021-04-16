@@ -15,6 +15,10 @@ public class Flashlight : MonoBehaviour
     [SerializeField]
     private int secondsBeforeStartingRefill;
     [SerializeField]
+    private float timeBetweenRefillTicks = 0.25f;
+    [SerializeField]
+    private int refillEveryTick = 1;
+    [SerializeField]
     private float batteryTimeLeft;
     [SerializeField]
     private float maxBatteryLife;
@@ -63,7 +67,7 @@ public class Flashlight : MonoBehaviour
     {
         yield return new WaitForSeconds(timeToWait);
         isRecharging = true;
-        StartCoroutine(Refilling(0.25f));
+        StartCoroutine(Refilling(timeBetweenRefillTicks));
     }
     private IEnumerator Refilling(float timeInBetweenTicks)
     {
@@ -71,7 +75,7 @@ public class Flashlight : MonoBehaviour
         {
             yield return new WaitForSeconds(timeInBetweenTicks);
 
-            RefillBattery(1);
+            RefillBattery(refillEveryTick);
             if (batteryTimeLeft >= maxBatteryLife)
             {
                 StopAllCoroutines();
