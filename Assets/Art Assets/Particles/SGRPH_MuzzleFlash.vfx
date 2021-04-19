@@ -548,7 +548,6 @@ MonoBehaviour:
   m_UISuperCollapsed: 0
   m_InputSlots:
   - {fileID: 8926484042661614570}
-  - {fileID: 0}
   m_OutputSlots: []
   m_Disabled: 0
   attribute: velocity
