@@ -37,8 +37,11 @@ public class PlayerInput : MonoBehaviour
     interactKeyController = "InteractCon", //Key used for interacting
     shootKeyController = "ShootCon"; //Key used for shooting 
 
+    private float shootTimer = 0;
+
     void Update()
     {
+        shootTimer += Time.deltaTime;
         if (!controller)
         { //When Mouse and Keyboard mode is active (Controller=talse)
             if (Input.GetKey(moveLeft)) { MoveLeft(); }
@@ -57,7 +60,7 @@ public class PlayerInput : MonoBehaviour
                 Interact();
             }
 
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetMouseButton(0))
             {
                 Shoot();
             }
@@ -132,13 +135,17 @@ public class PlayerInput : MonoBehaviour
     //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
     private void Shoot()
     {
-        if (player.currentWeapon == 0)
+        if (player.currentWeapon == 0 && shootTimer > player.HK416.GetFireRate())
         {
             player.HK416.Shoot(); //Assault Rifle
-        } else
+            shootTimer = 0;
+        }
+        if (player.currentWeapon == 1 && shootTimer > player.X26.GetFireRate())
         {
             player.X26.Shoot(); //Taser 
+            shootTimer = 0;
         }
+        
     }
 
     //The general function to interact with interactable objects within range (interactRange).
