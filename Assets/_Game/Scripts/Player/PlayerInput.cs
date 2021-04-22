@@ -10,6 +10,7 @@ public class PlayerInput : MonoBehaviour
 
     [SerializeField] GameObject targetPoint, //The object which the player will always rotate towards. AKA targetting point.
                                 playerEmitter; //The emit point for bullets and the taser projectiles.
+    private readonly float cameraZDistance = 11.45f;
 
     [SerializeField] private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
     public float sensitivity = 20; //Sensitivity of aiming with the controller
@@ -92,12 +93,18 @@ public class PlayerInput : MonoBehaviour
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
         RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZDistance));
+        targetPoint.transform.position = mousePos;
+
+        // old raycast based aim
+        /*if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
         {
             targetPoint.transform.position = new Vector3(hit.point.x,
                                                  playerEmitter.transform.position.y,
                                                  hit.point.z);
-        }
+        }*/
+
+
 
         //Rotate the visual object of the player towards the targetting point.
         Vector3 tarDir = targetPoint.transform.position - playerVisual.transform.position;
