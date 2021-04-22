@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.25329876, g: 0.21698704, b: 0.23319143, a: 1}
+  m_IndirectSpecularColor: {r: 0.25330186, g: 0.21698852, b: 0.2331926, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -839,6 +839,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
+--- !u!1 &1868301776 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7104229258598237219, guid: 6f18f500c3e344249ab96445143f424b, type: 3}
+  m_PrefabInstance: {fileID: 7104229257357681778}
+  m_PrefabAsset: {fileID: 0}
+--- !u!195 &1868301780
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868301776}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1873757178
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1024,7 +1051,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7104229258598237223, guid: 6f18f500c3e344249ab96445143f424b, type: 3}
+    - {fileID: 7104229258598237222, guid: 6f18f500c3e344249ab96445143f424b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6f18f500c3e344249ab96445143f424b, type: 3}
 --- !u!1001 &8157892177867099082
 PrefabInstance:
@@ -1088,6 +1117,10 @@ PrefabInstance:
     - target: {fileID: 8157892178109559180, guid: 81056cf83db6a834eb3d3e9383e527a5, type: 3}
       propertyPath: m_Name
       value: Enemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 8157892178109559180, guid: 81056cf83db6a834eb3d3e9383e527a5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81056cf83db6a834eb3d3e9383e527a5, type: 3}

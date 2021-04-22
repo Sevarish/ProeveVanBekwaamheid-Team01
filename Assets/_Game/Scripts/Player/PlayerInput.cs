@@ -38,7 +38,7 @@ public class PlayerInput : MonoBehaviour
     interactKeyController = "InteractCon", //Key used for interacting
     shootKeyController = "ShootCon"; //Key used for shooting 
 
-    void Update()
+    void FixedUpdate()
     {
         if (!controller)
         { //When Mouse and Keyboard mode is active (Controller=talse)
