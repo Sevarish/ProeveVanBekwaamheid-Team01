@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -10,8 +11,11 @@ public enum EnemyState
 };
 public class EnemyAI : MonoBehaviour
 {
-    [SerializeField]
-    private NavMeshAgent agent;
+    //When this gameobject is selected you can use ctrl + 9 to add
+    //a point with the current ground compared to scene view.
+    //Game view cannot be used for this!
+
+    public NavMeshAgent agent;
 
     //[SerializeField]
     //private Animator enemyAnim;
@@ -23,31 +27,31 @@ public class EnemyAI : MonoBehaviour
                   walkSpeed,
                   runSpeed;
 
-    [SerializeField]
     private bool playerInsideRange,
                  playerInsideAttackRange,
-                 alreadyAttacked;
+                 alreadyAttacked,
+                 walkpointSet;
 
     [SerializeField]
     private Transform player;
 
     [SerializeField]
     private LayerMask whatIsPlayer,
-                     whatIsGround;
+                      whatIsGround;
 
     public EnemyState enemyState = EnemyState.patrolling;
 
-    private bool walkpointSet;
 
     private Vector3 walkpoint;
 
+    [HideInInspector]
     public bool foundPlayer,
                 alertedPatrolling;
 
     // already added for the damaging/death system
     private int health, damage;
 
-    public Vector3[] points;
+    public List<Vector3> points = new List<Vector3>();
     private int destPoint = 0;
 
     private EnemyFov Fov;
@@ -99,14 +103,14 @@ public class EnemyAI : MonoBehaviour
         //enemyAnim.Play("Walking");
 
         // Returns if no points have been set up
-        if (points.Length == 0)
+        if (points.Count == 0)
             return;
 
         // Set the agent to go to the currently selected destination.
         agent.destination = points[destPoint];
 
         // Choose the next point in the array as the destination
-        destPoint = (destPoint + 1) % points.Length;
+        destPoint = (destPoint + 1) % points.Count;
     }
 
     public void Patroling()
@@ -138,6 +142,10 @@ public class EnemyAI : MonoBehaviour
         if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointSet = true;
     }
 
+    //public void ChaseEnemy()
+    //{
+    //    agent.SetDestination(enemy.position);
+    //}
     public void ChasePlayer()
     {
         if (!foundPlayer)
@@ -150,7 +158,6 @@ public class EnemyAI : MonoBehaviour
         agent.speed = runSpeed;
         agent.SetDestination(player.position);
         // enemyAnim.Play("Running");
-
 
         //TO DO: 
         //set the variable for the playerInsideAttackRange in the editor
