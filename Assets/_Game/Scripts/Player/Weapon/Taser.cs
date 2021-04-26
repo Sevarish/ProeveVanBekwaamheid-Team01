@@ -7,7 +7,7 @@ public class Taser : MonoBehaviour
     [SerializeField]
     GameObject targetPoint, //The object which the player will always rotate towards. AKA targetting point. (Crosshair)
                                 playerEmitter; //The emit point for bullets and the taser projectiles.
-
+    private float FireRate = 2f;
     public void Shoot()
     {
         Debug.DrawRay(playerEmitter.transform.position, (targetPoint.transform.position - playerEmitter.transform.position) * 20, Color.yellow, 1);
@@ -20,5 +20,10 @@ public class Taser : MonoBehaviour
                 hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
             }
         }
+    }
+
+    public float GetFireRate()
+    {
+        return FireRate;
     }
 }
