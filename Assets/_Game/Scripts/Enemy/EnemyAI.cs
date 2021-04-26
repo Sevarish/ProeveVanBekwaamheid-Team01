@@ -7,7 +7,7 @@ public enum EnemyState
     patrolling = 0,
     checkpoints = 1,
 };
-public class EnemyAI : MonoBehaviour
+public class EnemyAI : MonoBehaviour, Damageable
 {
     [SerializeField]
     private NavMeshAgent agent;
@@ -44,18 +44,20 @@ public class EnemyAI : MonoBehaviour
                 foundBody;
 
     // already added for the damaging/death system
-    private int health, damage;
+    private int health = 100, damage = 10;
 
     public Vector3[] points;
     private int destPoint = 0;
 
     public EnemyFov Fov;
+    public AssaultRifle attacking;
 
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
         agent = GetComponent<NavMeshAgent>();
         Fov = GetComponent<EnemyFov>();
+        attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
     }
 
@@ -165,8 +167,8 @@ public class EnemyAI : MonoBehaviour
         //Let the enemy shoot with a weapon towards the player
         if (!alreadyAttacked)
         {
-            // TO DO:
-            // Add here the part that you can attack
+            attacking.Shoot();
+            Debug.Log("Enemy is shooting");
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -178,17 +180,20 @@ public class EnemyAI : MonoBehaviour
         alreadyAttacked = false;
     }
 
-    private void TakeDamage()
-    {
-        health -= damage;
-
-        if (health <= 0) Invoke(nameof(DestroyEnemy), 0.5f);
-    }
-
     private void DestroyEnemy()
     {
         Destroy(gameObject);
         // add here the part where the death body will be dropped at the death of the enemy
+    }
+
+    void Damageable.TakeDamage()
+    {
+        health -= damage;
+
+        if (health <= 0)
+        {
+            Invoke(nameof(DestroyEnemy), 0.5f);
+        }
     }
 }
 

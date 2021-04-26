@@ -13,6 +13,7 @@ public class Hostage : MonoBehaviour, Interactable
     public float interactRange = 5;
     public Slider slider;
     float oldReleaseTime = 0;
+    private bool isSaving = false;
 
     private Transform currentInteractObject;
 
@@ -20,7 +21,10 @@ public class Hostage : MonoBehaviour, Interactable
     {
         EnteredInteractRange?.Invoke();
         currentInteractObject = objectThatInteracted;
-        StartCoroutine("StartFreeingHostage");
+        if (!isSaving)
+        {
+            StartCoroutine("StartFreeingHostage");
+        }
     }
 
     private void Start()
@@ -37,6 +41,7 @@ public class Hostage : MonoBehaviour, Interactable
 
     private IEnumerator StartFreeingHostage()
     {
+        isSaving = true;
         while (currentInteractObject != null)
         {
             slider.transform.gameObject.SetActive(true);
@@ -46,6 +51,7 @@ public class Hostage : MonoBehaviour, Interactable
                 OutOfRange?.Invoke();
                 slider.transform.gameObject.SetActive(false);
                 currentInteractObject = null;
+                isSaving = false;
             }
             if(releaseTime <= 0)
             {
