@@ -4,26 +4,26 @@ using UnityEngine;
 
 public class AssaultRifle : MonoBehaviour
 {
-    [SerializeField]
-    GameObject targetPoint, //The object which the player will always rotate towards. AKA targetting point. (Crosshair)
-               playerEmitter, //The emit point for bullets and the taser projectiles.
-               MF;
-        
-    private float FireRate = 0.12f;
+
+    public GameObject muzzleFlashPrefab;
+    public GameObject sourceEmitter;
+    public string targetTag;
+
+    private readonly float fireRate = 0.12f;
 
     public void Shoot()
     {
-        Quaternion rotParent = playerEmitter.transform.parent.rotation;
-        var MuzzleFlash = Instantiate(MF, playerEmitter.transform.position, rotParent);
-        MuzzleFlash.transform.SetParent(playerEmitter.transform.parent);
+        Quaternion rotParent = sourceEmitter.transform.parent.rotation;
+        var MuzzleFlash = Instantiate(muzzleFlashPrefab, sourceEmitter.transform.position, rotParent);
+        MuzzleFlash.transform.SetParent(sourceEmitter.transform.parent);
         Destroy(MuzzleFlash, 0.2f);
 
-        Debug.DrawRay(playerEmitter.transform.position, (targetPoint.transform.position - playerEmitter.transform.position) * 20, Color.black, 1);
+        Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).
         RaycastHit hit;
-        if (Physics.Raycast(playerEmitter.transform.position, (targetPoint.transform.position - playerEmitter.transform.position) * 20, out hit, Mathf.Infinity))
+        if (Physics.Raycast(sourceEmitter.transform.position, sourceEmitter.transform.forward, out hit, Mathf.Infinity))
         {
-            if (hit.transform.tag == "Enemy")
+            if (hit.transform.CompareTag(targetTag))
             {
                 hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
             }
@@ -32,6 +32,6 @@ public class AssaultRifle : MonoBehaviour
 
     public float GetFireRate()
     {
-        return FireRate;
+        return fireRate;
     }
 }
