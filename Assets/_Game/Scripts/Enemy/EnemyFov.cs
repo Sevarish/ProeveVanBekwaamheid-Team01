@@ -192,7 +192,7 @@ public class EnemyFov : MonoBehaviour
     public void FixedUpdate()
     {
         print(chasingEnemy);
-;       InFOV(transform, player, maxAngle, maxRadius, alertRadius);
+        InFOV(transform, player, maxAngle, maxRadius, alertRadius);
         if (isInFov && AI.foundPlayer || chasingEnemy)
         {
             maxAngle = foundPlayerAngle;
