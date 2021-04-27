@@ -149,24 +149,24 @@ public class EnemyFov : MonoBehaviour
             }
         }*/
 
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            Vector3 dirBetween = (enemies[i].position - checkingObject.position).normalized;
-            dirBetween.y *= 0;
+        //for (int i = 0; i < enemies.Length; i++)
+        //{
+        //    Vector3 dirBetween = (enemies[i].position - checkingObject.position).normalized;
+        //    dirBetween.y *= 0;
 
-            if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (enemies[i].position - checkingObject.position).normalized, out hit, maxRadius))
-            {
-                if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "ChasingEnemy")
-                {
-                    float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetween);
-                    if (angle <= maxAngle)
-                    {
-                        AI.agent.SetDestination(enemies[i].position);
-                        chasingEnemy = true;
-                    }
-                }
-            } else chasingEnemy = false; 
-        } 
+        //    if (Physics.Raycast(checkingObject.position + Vector3.up * heightMultiplayer, (enemies[i].position - checkingObject.position).normalized, out hit, maxRadius))
+        //    {
+        //        if (LayerMask.LayerToName(hit.transform.gameObject.layer) == "ChasingEnemy")
+        //        {
+        //            float angle = Vector3.Angle(checkingObject.forward + Vector3.up * heightMultiplayer, dirBetween);
+        //            if (angle <= maxAngle)
+        //            {
+        //                AI.agent.SetDestination(enemies[i].position);
+        //                chasingEnemy = true;
+        //            }
+        //        }
+        //    } else chasingEnemy = false; 
+        //} 
     }
 
     private void FollowPlayer()

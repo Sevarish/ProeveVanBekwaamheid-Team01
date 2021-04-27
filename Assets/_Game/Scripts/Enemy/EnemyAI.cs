@@ -39,6 +39,7 @@ public class EnemyAI : MonoBehaviour, Damageable
     private LayerMask whatIsPlayer,
                       whatIsGround;
 
+    [HideInInspector]
     public EnemyState enemyState = EnemyState.patrolling;
 
 
