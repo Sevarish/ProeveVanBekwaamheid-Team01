@@ -164,9 +164,9 @@ public class EnemyAI : MonoBehaviour, Damageable
         //set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
-            Fov.dropBody = true;
-            EnemyDeath?.Invoke();
-            gameObject.SetActive(false);
+            //Fov.dropBody = true;
+            //EnemyDeath?.Invoke();
+            //gameObject.SetActive(false);
             Attacking();
         }
 

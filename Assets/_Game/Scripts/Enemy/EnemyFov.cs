@@ -131,7 +131,7 @@ public class EnemyFov : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < corpse.Count; i++)
+        /*for (int i = 0; i < corpse.Count; i++)
         {
             Vector3 dirBetweenTest = (corpse[i].position - checkingObject.position).normalized;
             dirBetweenTest.y *= 0;
@@ -147,7 +147,7 @@ public class EnemyFov : MonoBehaviour
                     }
                 }
             }
-        }
+        }*/
 
         for (int i = 0; i < enemies.Length; i++)
         {
@@ -191,7 +191,6 @@ public class EnemyFov : MonoBehaviour
 
     public void FixedUpdate()
     {
-        print(chasingEnemy);
         InFOV(transform, player, maxAngle, maxRadius, alertRadius);
         if (isInFov && AI.foundPlayer || chasingEnemy)
         {

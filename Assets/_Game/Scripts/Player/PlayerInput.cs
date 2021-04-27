@@ -95,7 +95,6 @@ public class PlayerInput : MonoBehaviour
         int layerMask = 1 << groundLayer;
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
-        RaycastHit hit;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZDistance));
         targetPoint.transform.position = mousePos;
 
