@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -46,7 +47,7 @@ public class PlayerInput : MonoBehaviour
     private float shootTimerAR = 0, shootTimerTA = 0;
 
     [SerializeField]
-    private Text ammunitionText;
+    private TMP_Text ammunitionText;
 
     private void Start()
     {

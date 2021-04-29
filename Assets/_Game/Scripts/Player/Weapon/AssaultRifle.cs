@@ -9,15 +9,21 @@ public class AssaultRifle : MonoBehaviour
     public GameObject bulletPrefab; //Visual only.
     public GameObject sourceEmitter;
     private ParticleSystem bParticle;
-    public int clipCapacity = 32;
-    public int fullCapacity = 64;
+    public int clipCapacity = 32, clips = 7;
+    [HideInInspector]
+    public int fullCapacity = 0;
     public string targetTag;
 
     private readonly float fireRate = 0.12f;
 
+    private void Awake()
+    {
+        fullCapacity = clipCapacity * clips;
+    }
+
     private void Start()
     {
-        if (transform.tag == "Player")
+        if (transform.CompareTag("Player"))
         {
             Quaternion rotParent = sourceEmitter.transform.parent.rotation;
             var bullet = Instantiate(bulletPrefab, sourceEmitter.transform.position, rotParent);

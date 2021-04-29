@@ -4892,6 +4892,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BulletLight
       objectReference: {fileID: 0}
+    - target: {fileID: 4970314938324766318, guid: 27615898930f33542ad38f39f9adba6d, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27615898930f33542ad38f39f9adba6d, type: 3}
 --- !u!4 &6038135364096297991 stripped
