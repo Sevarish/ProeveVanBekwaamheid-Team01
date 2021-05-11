@@ -60,6 +60,7 @@ public class Grenade : MonoBehaviour
             if (thisGrenadeType == GrenadeType.FlashGrenade)
             {
                 //FLASH BEHAVIOUR ON ENEMY
+                hit.transform.GetComponent<EnemyAI>()?.Flashed();
             }
             //Apply physics
             if (applyPhysicsToRigidbodys && hit.transform.position != transform.position)

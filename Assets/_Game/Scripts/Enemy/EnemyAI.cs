@@ -168,6 +168,7 @@ public class EnemyAI : MonoBehaviour, Damageable
             //Fov.dropBody = true;
             //EnemyDeath?.Invoke();
             //gameObject.SetActive(false);
+
             Attacking();
         }
 
@@ -199,9 +200,22 @@ public class EnemyAI : MonoBehaviour, Damageable
         // add here the part where the death body will be dropped at the death of the enemy
     }
 
-    private void Flashed()
+    public void Flashed()
     {
+        if (!walkpointSet)
+        {
+            float randomX = UnityEngine.Random.Range(-2, 2);
+            float randomZ = UnityEngine.Random.Range(-2, 2);
 
+            walkpoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+            if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointSet = true; ;
+        }
+
+        if (walkpointSet) agent.SetDestination(walkpoint);
+
+        Fov.FollowPlayer();
+        Fov.inAlertFOV = true;
     }
 
     void Damageable.TakeDamage()

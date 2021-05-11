@@ -130,6 +130,8 @@ public class EnemyFov : MonoBehaviour
                 else if (!inFOV) isInFov = false;
             }
         }
+
+        for (int i = 0; i < deadBody.Length; i++)
         {
             Vector3 dirBetweenTest = (deadBody[i].transform.position - checkingObject.position).normalized;
             dirBetweenTest.y *= 0;
