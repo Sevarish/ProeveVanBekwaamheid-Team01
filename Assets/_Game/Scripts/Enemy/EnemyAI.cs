@@ -198,8 +198,16 @@ public class EnemyAI : MonoBehaviour, Damageable
         // add here the part where the death body will be dropped at the death of the enemy
     }
 
+    private void Flashed()
+    {
+
+    }
+
     void Damageable.TakeDamage()
     {
+        Fov.FollowPlayer();
+        Fov.inAlertFOV = true;
+
         health -= damage;
 
         if (health <= 0)

@@ -34,10 +34,10 @@ public class EnemyFov : MonoBehaviour
     [SerializeField]
     private GameObject body;
 
-    private bool chasingEnemy;
+    private bool inFOV = false, 
+                 chasingEnemy;
 
-    private bool inFOV = false,
-                 inAlertFOV = false;
+    public bool inAlertFOV = false;
 
     private GameObject[] deadBody;
 
@@ -169,7 +169,7 @@ public class EnemyFov : MonoBehaviour
         } 
     }
 
-    private void FollowPlayer()
+    public void FollowPlayer()
     {
         isInFov = true;
         gameObject.layer = 9;
