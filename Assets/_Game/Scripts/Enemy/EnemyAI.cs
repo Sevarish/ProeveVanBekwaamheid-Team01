@@ -39,6 +39,7 @@ public class EnemyAI : MonoBehaviour, Damageable
     private LayerMask whatIsPlayer,
                       whatIsGround;
 
+    [HideInInspector]
     public EnemyState enemyState = EnemyState.patrolling;
 
 
@@ -164,9 +165,9 @@ public class EnemyAI : MonoBehaviour, Damageable
         //set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
-            Fov.dropBody = true;
-            EnemyDeath?.Invoke();
-            gameObject.SetActive(false);
+            //Fov.dropBody = true;
+            //EnemyDeath?.Invoke();
+            //gameObject.SetActive(false);
             Attacking();
         }
 
