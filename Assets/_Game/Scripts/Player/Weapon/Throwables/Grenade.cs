@@ -53,7 +53,14 @@ public class Grenade : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             //Do Damage
-
+            if(thisGrenadeType == GrenadeType.NormalGrenade)
+            {
+                hit.transform.GetComponent<Damageable>()?.TakeDamage();
+            }
+            if (thisGrenadeType == GrenadeType.FlashGrenade)
+            {
+                //FLASH BEHAVIOUR ON ENEMY
+            }
             //Apply physics
             if (applyPhysicsToRigidbodys && hit.transform.position != transform.position)
             {
