@@ -47,9 +47,12 @@ public class ObjectiveManager : MonoBehaviour
     {
         while(gameTimer >= 0)
         {
-            gameTimer -= 0.1f;
-            gameTimerText.text = textBeforeGameTimer + Mathf.Round(gameTimer);
-            yield return new WaitForSeconds(0.1f);
+            gameTimer -= 1f;
+            int minutes = Mathf.FloorToInt(gameTimer / 60F);
+            int seconds = Mathf.FloorToInt(gameTimer - minutes * 60);
+            string niceTime = string.Format("{0:0}:{1:00}", minutes, seconds);
+            gameTimerText.text = textBeforeGameTimer + niceTime;
+            yield return new WaitForSeconds(1f);
         }
         GameOver?.Invoke();
     }

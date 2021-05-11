@@ -571,7 +571,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: gameTimer
-      value: 5
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: textBeforeCounter
