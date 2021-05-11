@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Flashlight : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class Flashlight : MonoBehaviour
 
     private bool isTurnedOn = true;
     private new Light light;
+
+    [SerializeField]
+    private Slider flashLightUI;
     [SerializeField]
     private int secondsBeforeStartingRefill;
     [SerializeField]
@@ -35,6 +39,7 @@ public class Flashlight : MonoBehaviour
     private void Update()
     {
         FollowMouse();
+        UpdateUIElement(batteryTimeLeft);
 
         if (Input.GetKeyDown(flashLightKey) && batteryTimeLeft > 0)
         {
@@ -116,5 +121,10 @@ public class Flashlight : MonoBehaviour
         Vector3 newDirection = Vector3.RotateTowards(light.transform.forward, tarDir, 1, 0.0f);
         light.transform.rotation = Quaternion.LookRotation(newDirection);
         light.transform.localEulerAngles = new Vector3(0, light.transform.localEulerAngles.y, 0);
+    }
+
+    private void UpdateUIElement(float batteryLevel)
+    {
+        flashLightUI.value = batteryLevel;
     }
 }
