@@ -7,8 +7,8 @@ public class EnemyFov : MonoBehaviour
     [SerializeField]
     private Transform player;
 
-    [SerializeField]
-    private GameObject[] enemies;
+    private GameObject[] enemies,
+                         deadBody;
 
     [Range(0, 180)]
     [SerializeField]
@@ -21,15 +21,15 @@ public class EnemyFov : MonoBehaviour
     [SerializeField]
     private float foundPlayerRadius,
                   foundPlayerAngle,
+                  flashlightSightRadius,
                   originalRadius,
                   originalAngle,
                   heightMultiplayer;
 
     [HideInInspector]
     public bool isInFov = false,
-                dropBody;
-
-    private EnemyAI AI;
+                dropBody,
+                inAlertFOV = false;
 
     [SerializeField]
     private GameObject body;
@@ -37,12 +37,14 @@ public class EnemyFov : MonoBehaviour
     private bool inFOV = false, 
                  chasingEnemy;
 
-    public bool inAlertFOV = false;
-
-    private GameObject[] deadBody;
+    private Flashlight flashlight;
+    private EnemyAI AI;
 
     public void Awake()
     {
+        GameObject getFlashlight = GameObject.Find("FlashLight");
+        flashlight = getFlashlight.GetComponent<Flashlight>();
+
         AI = GetComponent<EnemyAI>();
         AI.EnemyDeath += DropBody;
     }
@@ -95,6 +97,7 @@ public class EnemyFov : MonoBehaviour
     public void InFOV(Transform checkingObject, Transform target, float maxAngle, float maxRadius, float alertRadius)
     {
         deadBody = GameObject.FindGameObjectsWithTag("DeadEnemy");
+        enemies = GameObject.FindGameObjectsWithTag("Enemy");
         Vector3 directionBetween = (target.position - checkingObject.position).normalized;
         directionBetween.y *= 0;
 
@@ -191,10 +194,22 @@ public class EnemyFov : MonoBehaviour
     public void FixedUpdate()
     {
         InFOV(transform, player, maxAngle, maxRadius, alertRadius);
+
         if (isInFov && AI.foundPlayer || chasingEnemy)
         {
             maxAngle = foundPlayerAngle;
             maxRadius = foundPlayerRadius;
+        }
+        else
+        {
+            maxRadius = originalRadius;
+            maxAngle = originalAngle;
+        }
+
+        if (flashlight.isTurnedOn)
+        {
+            maxAngle = foundPlayerAngle;
+            maxRadius = flashlightSightRadius;
         }
         else
         {
