@@ -144,10 +144,6 @@ public class EnemyAI : MonoBehaviour, Damageable
         if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointSet = true;
     }
 
-    //public void ChaseEnemy()
-    //{
-    //    agent.SetDestination(enemy.position);
-    //}
     public void ChasePlayer()
     {
         if (!foundPlayer)
@@ -161,14 +157,8 @@ public class EnemyAI : MonoBehaviour, Damageable
         agent.SetDestination(player.position);
         // enemyAnim.Play("Running");
 
-        //TO DO: 
-        //set the variable for the playerInsideAttackRange in the editor
         if (playerInsideAttackRange)
         {
-            //Fov.dropBody = true;
-            //EnemyDeath?.Invoke();
-            //gameObject.SetActive(false);
-
             Attacking();
         }
 
@@ -196,8 +186,9 @@ public class EnemyAI : MonoBehaviour, Damageable
     
     private void DestroyEnemy()
     {
-        Destroy(gameObject);
-        // add here the part where the death body will be dropped at the death of the enemy
+        gameObject.SetActive(false);
+        Fov.dropBody = true;
+        EnemyDeath?.Invoke();
     }
 
     public void Flashed()
@@ -220,8 +211,7 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     void Damageable.TakeDamage()
     {
-        Fov.FollowPlayer();
-        Fov.inAlertFOV = true;
+        agent.SetDestination(player.transform.position);
 
         health -= damage;
 

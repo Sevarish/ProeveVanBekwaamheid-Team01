@@ -200,21 +200,18 @@ public class EnemyFov : MonoBehaviour
             maxAngle = foundPlayerAngle;
             maxRadius = foundPlayerRadius;
         }
-        else
-        {
-            maxRadius = originalRadius;
-            maxAngle = originalAngle;
-        }
+        else OriginalFOV();
 
         if (flashlight.isTurnedOn)
         {
             maxAngle = foundPlayerAngle;
             maxRadius = flashlightSightRadius;
         }
-        else
-        {
-            maxRadius = originalRadius;
-            maxAngle = originalAngle;
-        }
+        else OriginalFOV();
+    }
+    private void OriginalFOV()
+    {
+        maxRadius = originalRadius;
+        maxAngle = originalAngle;
     }
 }
