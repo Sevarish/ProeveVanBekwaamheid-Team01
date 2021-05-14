@@ -81,27 +81,19 @@ public class EnemyAI : MonoBehaviour, Damageable
                 if (Fov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
                 break;
-            // TO DO:
-            // set the checkpoint function as a state
 
             case EnemyState.checkpoints:
+                Checkpoints();
                 break;
-                // NOTE:
-                // deleted the rotating and finished patrolling state
-                // had both to prevent that the enemy gets stuck on a corner.
-                // now when his speed is under a certain value he will choose a new path.
             default:
                 break;
         }
-
         if (!agent.pathPending && agent.remainingDistance < 0.5f && !alertedPatrolling)
             Checkpoints();
     }
 
     public void Checkpoints()
     {
-        // TO DO:
-        // Add Walking animation
         //enemyAnim.Play("Walking");
 
         // Returns if no points have been set up
@@ -119,8 +111,6 @@ public class EnemyAI : MonoBehaviour, Damageable
     {
         agent.speed = walkSpeed;
 
-        // TO DO:
-        // Add patrolling animation
         //enemyAnim.Play("Patroling");
 
 
@@ -146,10 +136,6 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     public void ChasePlayer()
     {
-        if (!foundPlayer)
-        {
-            //SoundManager.PlaySound("Shout");
-        }
         foundPlayer = true;
         if (playerInsideRange) Fov.isInFov = true;
         else { foundPlayer = false; Fov.isInFov = false; }
@@ -166,9 +152,10 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     public void Attacking()
     {
+        agent.SetDestination(transform.position);
+        transform.LookAt(player);
+
         float timeBetweenAttacks = 1f;
-        //TO DO: 
-        //Let the enemy shoot with a weapon towards the player
         if (!alreadyAttacked)
         {
             attacking.Shoot();
@@ -186,9 +173,9 @@ public class EnemyAI : MonoBehaviour, Damageable
     
     private void DestroyEnemy()
     {
-        gameObject.SetActive(false);
         Fov.dropBody = true;
         EnemyDeath?.Invoke();
+        gameObject.SetActive(false);
     }
 
     public void Flashed()
@@ -205,8 +192,8 @@ public class EnemyAI : MonoBehaviour, Damageable
 
         if (walkpointSet) agent.SetDestination(walkpoint);
 
-        Fov.FollowPlayer();
-        Fov.inAlertFOV = true;
+      //  Fov.FollowPlayer();
+      //  Fov.inAlertFOV = true;
     }
 
     void Damageable.TakeDamage()

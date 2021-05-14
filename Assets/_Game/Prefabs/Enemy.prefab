@@ -101,7 +101,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   agent: {fileID: 2958067720687719053}
   _sightDistance: 14
-  _attackRange: 10
+  _attackRange: 8
   _walkpointRange: 20
   walkSpeed: 3
   runSpeed: 6

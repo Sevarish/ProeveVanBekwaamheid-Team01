@@ -188,6 +188,7 @@ public class EnemyFov : MonoBehaviour
         if (dropBody)
         {
             Instantiate(body, transform.position, Quaternion.identity);
+            dropBody = false;
         }
     }
 
