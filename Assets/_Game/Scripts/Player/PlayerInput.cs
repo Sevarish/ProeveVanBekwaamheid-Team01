@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -38,11 +40,30 @@ public class PlayerInput : MonoBehaviour
     interactKeyController = "InteractCon", //Key used for interacting
     shootKeyController = "ShootCon"; //Key used for shooting 
 
-    private float shootTimer = 0;
 
+    private int currentHK416Clip, currentX26Clip, fullHK416Cap;
+    private bool isReloading = false;
+    private float reloadTimer, reloadTimeCap = 2.5f;
+    private float shootTimerAR = 0, shootTimerTA = 0;
+
+    [SerializeField]
+    private TMP_Text ammunitionText;
+
+    private void Start()
+    {
+        //Set the clip to the weapon's clip capacity
+        currentHK416Clip = player.HK416.clipCapacity;
+        currentX26Clip = player.X26.clipCapacity;
+
+        //Set the full amount of the Assault Rifle ammo capacity
+        fullHK416Cap = player.HK416.fullCapacity;
+
+        UpdateUI();
+    }
     void FixedUpdate()
     {
-        shootTimer += Time.deltaTime;
+        shootTimerAR += Time.deltaTime;
+        shootTimerTA += Time.deltaTime;
         if (!controller)
         { //When Mouse and Keyboard mode is active (Controller=talse)
             if (Input.GetKey(moveLeft)) { MoveLeft(); }
@@ -51,9 +72,10 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetKey(moveDown)) { MoveDown(); }
             Aim();
 
-            if (Input.GetKeyDown(switchWeapon))
+            if (Input.GetKeyDown(switchWeapon) && !isReloading)
             {
                 player.SwitchWeapon();
+                UpdateUI();
             }
 
             if (Input.GetKeyDown(interactButton))
@@ -64,6 +86,9 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 Shoot();
+            } else
+            {
+                player.HK416.StopPtcl();
             }
         }
         else //When controller mode is active (Controller=true)
@@ -78,6 +103,16 @@ public class PlayerInput : MonoBehaviour
             if (Input.GetAxis(shootKeyController) > 0)
             {
                 Shoot();
+            }
+        }
+
+        if (isReloading)
+        {
+            reloadTimer += Time.deltaTime;
+            if (reloadTimer > reloadTimeCap)
+            {
+                ReloadComplete();
+                reloadTimer = 0;
             }
         }
     }
@@ -95,7 +130,6 @@ public class PlayerInput : MonoBehaviour
         int layerMask = 1 << groundLayer;
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
-        RaycastHit hit;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZDistance));
         targetPoint.transform.position = mousePos;
 
@@ -142,17 +176,37 @@ public class PlayerInput : MonoBehaviour
     //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
     private void Shoot()
     {
-        if (player.currentWeapon == 0 && shootTimer > player.HK416.GetFireRate())
+        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0 )
         {
             player.HK416.Shoot(); //Assault Rifle
-            shootTimer = 0;
+            player.HK416.StartPtcl();
+            currentHK416Clip--;
+            if (currentHK416Clip == 0)
+            {
+                if (fullHK416Cap > 0)
+                {
+                    isReloading = true;
+                }
+                player.HK416.StopPtcl();
+            }
+            shootTimerAR = 0;
+            UpdateUI();
         }
-        if (player.currentWeapon == 1 && shootTimer > player.X26.GetFireRate())
+        if (player.currentWeapon == 1 && shootTimerTA > player.X26.GetFireRate() && currentX26Clip > 0)
         {
-            player.X26.Shoot(); //Taser 
-            shootTimer = 0;
-        }
-        
+            player.X26.Shoot(); //Taser
+            currentX26Clip--;
+            shootTimerTA = 0;
+            UpdateUI();
+        }   
+    }
+
+    private void ReloadComplete()
+    {
+        isReloading = false;
+        currentHK416Clip = player.HK416.clipCapacity;
+        fullHK416Cap -= player.HK416.clipCapacity;
+        UpdateUI();
     }
 
     //The general function to interact with interactable objects within range (interactRange).
@@ -163,6 +217,18 @@ public class PlayerInput : MonoBehaviour
         foreach (RaycastHit hit in hits)
         {
             hit.transform.gameObject.GetComponent<Interactable>()?.Interact(transform);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        if (player.currentWeapon == 0)
+        {
+            ammunitionText.text = currentHK416Clip + "/" + fullHK416Cap;
+        }
+        if (player.currentWeapon == 1)
+        {
+            ammunitionText.text = currentX26Clip + "/0";
         }
     }
 }
