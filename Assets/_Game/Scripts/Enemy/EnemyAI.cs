@@ -49,7 +49,6 @@ public class EnemyAI : MonoBehaviour, Damageable
     public bool foundPlayer,
                 alertedPatrolling;
 
-    // already added for the damaging/death system
     private int health = 100, damage = 10;
 
     public List<Vector3> points = new List<Vector3>();
@@ -75,7 +74,6 @@ public class EnemyAI : MonoBehaviour, Damageable
             case EnemyState.patrolling:
                 playerInsideRange = Physics.CheckSphere(transform.position, _sightDistance, whatIsPlayer);
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
-                //if (!EnemyFov.isInFov) {  }
                 if (alertedPatrolling) Patroling();
                 if (!playerInsideRange && !foundPlayer) Fov.isInFov = false;
                 if (Fov.isInFov) ChasePlayer();
@@ -159,7 +157,6 @@ public class EnemyAI : MonoBehaviour, Damageable
         if (!alreadyAttacked)
         {
             attacking.Shoot();
-            Debug.Log("Enemy is shooting");
 
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
@@ -175,7 +172,6 @@ public class EnemyAI : MonoBehaviour, Damageable
     {
         Fov.dropBody = true;
         EnemyDeath?.Invoke();
-        gameObject.SetActive(false);
     }
 
     public void Flashed()
@@ -191,9 +187,6 @@ public class EnemyAI : MonoBehaviour, Damageable
         }
 
         if (walkpointSet) agent.SetDestination(walkpoint);
-
-      //  Fov.FollowPlayer();
-      //  Fov.inAlertFOV = true;
     }
 
     void Damageable.TakeDamage()

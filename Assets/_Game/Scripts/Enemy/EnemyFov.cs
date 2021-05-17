@@ -21,6 +21,7 @@ public class EnemyFov : MonoBehaviour
     [SerializeField]
     private float foundPlayerRadius,
                   foundPlayerAngle,
+                  flashlightSightAngle,
                   flashlightSightRadius,
                   originalRadius,
                   originalAngle,
@@ -188,7 +189,7 @@ public class EnemyFov : MonoBehaviour
         if (dropBody)
         {
             Instantiate(body, transform.position, Quaternion.identity);
-            dropBody = false;
+            Destroy(gameObject);
         }
     }
 
@@ -205,7 +206,7 @@ public class EnemyFov : MonoBehaviour
 
         if (flashlight.isTurnedOn)
         {
-            maxAngle = foundPlayerAngle;
+            maxAngle = flashlightSightAngle;
             maxRadius = flashlightSightRadius;
         }
         else OriginalFOV();

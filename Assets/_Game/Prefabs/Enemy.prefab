@@ -137,6 +137,7 @@ MonoBehaviour:
   alertRadius: 3
   foundPlayerRadius: 14
   foundPlayerAngle: 180
+  flashlightSightAngle: 90
   flashlightSightRadius: 9
   originalRadius: 6
   originalAngle: 60
