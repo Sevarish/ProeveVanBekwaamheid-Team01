@@ -34,5 +34,5 @@ Material:
     m_Floats:
     - Vector1_8afcb2a177434dd3b8921d7696073afc: 0.07
     m_Colors:
-    - _FogColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FogColor: {r: 0.3726415, g: 1, b: 0.7290443, a: 1}
   m_BuildTextureStacks: []
