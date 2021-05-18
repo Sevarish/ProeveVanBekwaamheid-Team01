@@ -1,15 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class PlayerInput : MonoBehaviour
 {
-    [SerializeField]Player player; //The parent object of the entire player.
-    [SerializeField]GameObject playerVisual; //The visual part of the player which rotates.
+    [SerializeField] Player player; //The parent object of the entire player.
+    [SerializeField]
+    GameObject playerVisual; //The visual part of the player which rotates.
 
-    [SerializeField]GameObject targetPoint; //The object which the player will always rotate towards. AKA targetting point.
+    [SerializeField] GameObject targetPoint, //The object which the player will always rotate towards. AKA targetting point.
+                                playerEmitter; //The emit point for bullets and the taser projectiles.
+    private readonly float cameraZDistance = 11.45f;
 
-    [SerializeField]private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
+    [SerializeField] private bool controller = false; //While true, the input will go via a Controller (PS4 Controller).
     public float sensitivity = 20; //Sensitivity of aiming with the controller
 
     [SerializeField]
@@ -25,30 +30,90 @@ public class PlayerInput : MonoBehaviour
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
     moveUp = KeyCode.W,
-    moveDown = KeyCode.S;
+    moveDown = KeyCode.S,
+    switchWeapon = KeyCode.LeftControl;
     //Controller
     private readonly string conMoveSide = "LR", //Left Right for walking
     conMoveFrontBack = "FB", //Front Back for walking
     conAimLR = "AimLR", //Left Right for aiming
-    conAimFB = "AimFB"; //Front Back for aming
+    conAimFB = "AimFB", //Front Back for aming
+    interactKeyController = "InteractCon", //Key used for interacting
+    shootKeyController = "ShootCon"; //Key used for shooting 
 
-    void Update()
+
+    private int currentHK416Clip, currentX26Clip, fullHK416Cap;
+    private bool isReloading = false;
+    private float reloadTimer, reloadTimeCap = 2.5f;
+    private float shootTimerAR = 0, shootTimerTA = 0;
+
+    [SerializeField]
+    private TMP_Text ammunitionText;
+
+    private void Start()
     {
-        if (!controller) {
+        //Set the clip to the weapon's clip capacity
+        currentHK416Clip = player.HK416.clipCapacity;
+        currentX26Clip = player.X26.clipCapacity;
+
+        //Set the full amount of the Assault Rifle ammo capacity
+        fullHK416Cap = player.HK416.fullCapacity;
+
+        UpdateUI();
+    }
+    void FixedUpdate()
+    {
+        shootTimerAR += Time.deltaTime;
+        shootTimerTA += Time.deltaTime;
+        if (!controller)
+        { //When Mouse and Keyboard mode is active (Controller=talse)
             if (Input.GetKey(moveLeft)) { MoveLeft(); }
             if (Input.GetKey(moveRight)) { MoveRight(); }
             if (Input.GetKey(moveUp)) { MoveUp(); }
             if (Input.GetKey(moveDown)) { MoveDown(); }
             Aim();
-        } else
+
+            if (Input.GetKeyDown(switchWeapon) && !isReloading)
+            {
+                player.SwitchWeapon();
+                UpdateUI();
+            }
+
+            if (Input.GetKeyDown(interactButton))
+            {
+                Interact();
+            }
+
+            if (Input.GetMouseButton(0))
+            {
+                Shoot();
+            } else
+            {
+                player.HK416.StopPtcl();
+            }
+        }
+        else //When controller mode is active (Controller=true)
         {
             MoveController();
             AimController();
+            if (Input.GetAxis(interactKeyController) > 0)
+            {
+                Interact();
+            }
+
+            if (Input.GetAxis(shootKeyController) > 0)
+            {
+                Shoot();
+            }
         }
 
-        if (Input.GetKeyDown(interactButton))
+        if (isReloading)
         {
-            Interact();
+            reloadTimer += Time.deltaTime;
+            if (reloadTimer > reloadTimeCap)
+            {
+                ReloadComplete();
+                reloadTimer = 0;
+            }
         }
     }
     //MOUSE AND KEYBOARD
@@ -63,16 +128,20 @@ public class PlayerInput : MonoBehaviour
     {
         //Create and invert the layermask.
         int layerMask = 1 << groundLayer;
-        //layerMask = ~layerMask;
 
         //Casts a raycast from the camera to the mouse position and moves the targetting point to the mouse's location.
-        RaycastHit hit;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZDistance));
+        targetPoint.transform.position = mousePos;
+
+        // old raycast based aim
+        /*if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hit, Mathf.Infinity, layerMask))
         {
             targetPoint.transform.position = new Vector3(hit.point.x,
-                                                 hit.point.y + 1,
+                                                 playerEmitter.transform.position.y,
                                                  hit.point.z);
-        }
+        }*/
+
+
 
         //Rotate the visual object of the player towards the targetting point.
         Vector3 tarDir = targetPoint.transform.position - playerVisual.transform.position;
@@ -83,7 +152,8 @@ public class PlayerInput : MonoBehaviour
 
     //CONTROLLER
     //Movement for Controller input. Will run when controller is true.
-    private void MoveController() {
+    private void MoveController()
+    {
         player.transform.Translate(Input.GetAxis(conMoveSide) * player.speed * Time.deltaTime,
                                    0,
                                    -Input.GetAxis(conMoveFrontBack) * player.speed * Time.deltaTime);
@@ -103,13 +173,62 @@ public class PlayerInput : MonoBehaviour
         playerVisual.transform.localEulerAngles = new Vector3(0, playerVisual.transform.localEulerAngles.y, 0);
     }
 
+    //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
+    private void Shoot()
+    {
+        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0 )
+        {
+            player.HK416.Shoot(); //Assault Rifle
+            player.HK416.StartPtcl();
+            currentHK416Clip--;
+            if (currentHK416Clip == 0)
+            {
+                if (fullHK416Cap > 0)
+                {
+                    isReloading = true;
+                }
+                player.HK416.StopPtcl();
+            }
+            shootTimerAR = 0;
+            UpdateUI();
+        }
+        if (player.currentWeapon == 1 && shootTimerTA > player.X26.GetFireRate() && currentX26Clip > 0)
+        {
+            player.X26.Shoot(); //Taser
+            currentX26Clip--;
+            shootTimerTA = 0;
+            UpdateUI();
+        }   
+    }
+
+    private void ReloadComplete()
+    {
+        isReloading = false;
+        currentHK416Clip = player.HK416.clipCapacity;
+        fullHK416Cap -= player.HK416.clipCapacity;
+        UpdateUI();
+    }
+
+    //The general function to interact with interactable objects within range (interactRange).
     private void Interact()
     {
         RaycastHit[] hits = Physics.RaycastAll(transform.position, playerVisual.transform.forward, interactRange);
-        
+
         foreach (RaycastHit hit in hits)
         {
             hit.transform.gameObject.GetComponent<Interactable>()?.Interact(transform);
+        }
+    }
+
+    private void UpdateUI()
+    {
+        if (player.currentWeapon == 0)
+        {
+            ammunitionText.text = currentHK416Clip + "/" + fullHK416Cap;
+        }
+        if (player.currentWeapon == 1)
+        {
+            ammunitionText.text = currentX26Clip + "/0";
         }
     }
 }

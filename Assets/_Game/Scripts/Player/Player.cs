@@ -1,27 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, Damageable
 {
-    public int lifes;
+    public Slider healthUI;
+    public int health = 30;
+    public int damageTaken = 10;
     public float speed = 8.5f,
                  vision,
                  flashBatteryLife;
-    public List<BaseWeapon> weapons = new List<BaseWeapon>();
+    public AssaultRifle HK416;
+    public Taser X26;
     public bool Died;
     private GameObject visionCone;
-    private int currentWeapon;
-
-    void Start()
-    {
-
-    }
-
-    public void TakeDamage(int _amount)
-    {
-        lifes -= _amount;
-    }
+    public int currentWeapon; //0 is HK416, 1 is Taser
 
     private void SetVision()
     {
@@ -30,28 +24,41 @@ public class Player : MonoBehaviour
 
     public void SwitchWeapon()
     {
-
+        if (currentWeapon == 0) { currentWeapon = 1; Debug.Log(currentWeapon); return; }
+        if (currentWeapon == 1) { currentWeapon = 0; Debug.Log(currentWeapon); return; }
     }
 
-    public void SwitchWeapon(BaseWeapon weapon)
+    private void DestroyPlayer()
     {
-
+        //Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
-
-    public BaseWeapon GetCurrentWeapon()
+    public void TakeDamage(int _amount)
     {
-        return weapons[currentWeapon];
+        health -= _amount;
+
+        UpdateHealthUI(health);
+
+        if (health <= 0)
+        {
+            Invoke(nameof(DestroyPlayer), 0.5f);
+        }
     }
 
-    public void ToggleFlashLight()
+    public void TakeDamage()
     {
+        health -= damageTaken;
 
+        UpdateHealthUI(health);
+
+        if (health <= 0)
+        {
+            Invoke(nameof(DestroyPlayer), 0.5f);
+        }
     }
 
-    private IEnumerator RechargeFlash()
+    private void UpdateHealthUI(int newHealth)
     {
-        yield return new WaitForSeconds(0.1f);
+        healthUI.value = newHealth;
     }
-
-    
 }

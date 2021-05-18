@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using System;
+using UnityEngine.SceneManagement;
 
 public class ObjectiveManager : MonoBehaviour
 {
@@ -59,6 +60,6 @@ public class ObjectiveManager : MonoBehaviour
 
     private void RestartLevel()
     {
-        Application.LoadLevel(Application.loadedLevel);
+        SceneManager.LoadScene("Game");
     }
 }
