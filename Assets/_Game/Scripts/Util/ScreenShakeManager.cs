@@ -22,6 +22,19 @@ public class ScreenShakeManager : MonoBehaviour
         shakeDuration = duration;
     }
 
+    public void Shake(float duration, float newshakeAmount)
+    {
+        shakeAmount = newshakeAmount;
+        shakeDuration = duration;
+    }
+
+    public void Shake(float duration, float newshakeAmount, float newDecreaseFactor)
+    {
+        decreaseFactor = newDecreaseFactor;
+        shakeAmount = newshakeAmount;
+        shakeDuration = duration;
+    }
+
     void Awake()
     {
         if (camTransform == null)
