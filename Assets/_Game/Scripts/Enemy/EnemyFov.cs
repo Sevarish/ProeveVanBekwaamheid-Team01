@@ -43,8 +43,7 @@ public class EnemyFov : MonoBehaviour
 
     public void Awake()
     {
-        GameObject getFlashlight = GameObject.Find("FlashLight");
-        flashlight = getFlashlight.GetComponent<Flashlight>();
+        flashlight = FindObjectOfType<Flashlight>();
 
         AI = GetComponent<EnemyAI>();
         AI.EnemyDeath += DropBody;

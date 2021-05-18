@@ -34,6 +34,8 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     [SerializeField]
     private Transform player;
+    private Vector3 delayedPlayerPos;
+    public float delayPosTime;
 
     [SerializeField]
     private LayerMask whatIsPlayer,
@@ -49,7 +51,7 @@ public class EnemyAI : MonoBehaviour, Damageable
     public bool foundPlayer,
                 alertedPatrolling;
 
-    private int health = 100, damage = 10;
+    private int health = 100, damage = 25;
 
     public List<Vector3> points = new List<Vector3>();
     private int destPoint = 0;
@@ -65,6 +67,16 @@ public class EnemyAI : MonoBehaviour, Damageable
         Fov = GetComponent<EnemyFov>();
         attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
+        StartCoroutine(GetDelayedPos());
+    }
+
+    private IEnumerator GetDelayedPos()
+    {
+        while (true)
+        {
+            delayedPlayerPos = player.transform.position;
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 
     public void FixedUpdate()
@@ -151,7 +163,7 @@ public class EnemyAI : MonoBehaviour, Damageable
     public void Attacking()
     {
         agent.SetDestination(transform.position);
-        transform.LookAt(player);
+        transform.LookAt(delayedPlayerPos);
 
         float timeBetweenAttacks = 1f;
         if (!alreadyAttacked)

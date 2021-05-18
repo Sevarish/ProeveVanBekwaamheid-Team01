@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class Player : MonoBehaviour, Damageable
     public Taser X26;
     public bool Died;
     private GameObject visionCone;
+    public Action GameOver;
     public int currentWeapon; //0 is HK416, 1 is Taser
 
     private void SetVision()
@@ -42,6 +44,7 @@ public class Player : MonoBehaviour, Damageable
         if (health <= 0)
         {
             Invoke(nameof(DestroyPlayer), 0.5f);
+            GameOver?.Invoke();
         }
     }
 
@@ -54,6 +57,7 @@ public class Player : MonoBehaviour, Damageable
         if (health <= 0)
         {
             Invoke(nameof(DestroyPlayer), 0.5f);
+            GameOver?.Invoke();
         }
     }
 

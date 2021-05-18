@@ -41,15 +41,12 @@ public class AssaultRifle : MonoBehaviour
         Destroy(MuzzleFlash, 0.2f);
 
 
-        Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
+        //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).
         RaycastHit hit;
         if (Physics.Raycast(sourceEmitter.transform.position, sourceEmitter.transform.forward, out hit, Mathf.Infinity))
         {
-            if (hit.transform.CompareTag(targetTag))
-            {
-                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
-            }
+            hit.transform.gameObject.GetComponent<Damageable>()?.TakeDamage();
         }
     }
 
