@@ -11,7 +11,7 @@ public class Flashlight : MonoBehaviour
     [SerializeField]
     private Transform crossHair;
 
-    private bool isTurnedOn = true;
+    public bool isTurnedOn = true;
     private new Light light;
 
     [SerializeField]
