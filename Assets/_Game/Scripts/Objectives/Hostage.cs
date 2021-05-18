@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UI;
 
 public class Hostage : MonoBehaviour, Interactable
@@ -14,6 +15,8 @@ public class Hostage : MonoBehaviour, Interactable
     public Slider slider;
     float oldReleaseTime = 0;
     private bool isSaving = false;
+    public NavMeshAgent agent;
+    public Vector3 despawnPos;
 
     private Transform currentInteractObject;
 
@@ -32,11 +35,21 @@ public class Hostage : MonoBehaviour, Interactable
         slider.maxValue = releaseTime;
         oldReleaseTime = releaseTime;
         slider.transform.gameObject.SetActive(false);
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Update()
     {
         slider.value = releaseTime;
+        if (agent.hasPath)
+        {
+            Vector3 distanceToEnd = transform.position - despawnPos;
+            Debug.Log(distanceToEnd.magnitude);
+            if (distanceToEnd.magnitude < 1f)
+            {
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     private IEnumerator StartFreeingHostage()
@@ -57,8 +70,9 @@ public class Hostage : MonoBehaviour, Interactable
             {
                 currentInteractObject = null;
                 SavedHostage?.Invoke();
-                Debug.Log("saved");
                 slider.transform.gameObject.SetActive(false);
+                agent.SetDestination(despawnPos);
+                
             }
             releaseTime -= 0.10f;
             yield return new WaitForSeconds(0.10f);
