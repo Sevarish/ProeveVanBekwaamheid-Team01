@@ -653,6 +653,7 @@ GameObject:
   - component: {fileID: 123432945}
   - component: {fileID: 123432948}
   - component: {fileID: 406452505}
+  - component: {fileID: 123432949}
   m_Layer: 6
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -785,6 +786,22 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
+--- !u!114 &123432949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123432944}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89df9c40f476ceb48ab6145e49c51dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 123432947}
+  shakeDuration: 0
+  shakeAmount: 0.7
+  decreaseFactor: 1
 --- !u!4 &130875744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 51c0abe3ccf4afc49a904d1409d25ea6, type: 3}
@@ -8170,7 +8187,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2391825459465828733, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -471
+      value: -350
       objectReference: {fileID: 0}
     - target: {fileID: 2391825460217540978, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: m_Pivot.x
@@ -8294,7 +8311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6547499262499147909, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -475
+      value: -350
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
