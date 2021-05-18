@@ -24,9 +24,9 @@ public class Grenade : MonoBehaviour
     public bool applyPhysicsToRigidbodys = false;
     private Rigidbody applyPhysics;
 
-    private void Start()
+    private void Awake()
     {
-        applyPhysics = GetComponent<Rigidbody>();
+        applyPhysics = gameObject.GetComponent<Rigidbody>();
         if (fuseOnAwake)
         {
             Explode();
@@ -63,7 +63,7 @@ public class Grenade : MonoBehaviour
                 hit.transform.GetComponent<EnemyAI>()?.Flashed();
             }
             //Apply physics
-            if (applyPhysicsToRigidbodys && hit.transform.position != transform.position)
+            if (applyPhysicsToRigidbodys && hit.transform.GetComponent<Rigidbody>() != null)
             {
                 hit.transform.GetComponent<Rigidbody>()?.AddForce((hit.transform.position - transform.position) * explosionForce, ForceMode.Impulse);
             }
