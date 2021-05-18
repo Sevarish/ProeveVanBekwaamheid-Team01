@@ -127,8 +127,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fuseTime: 1
   thisGrenadeType: 0
-  explosionRadius: 20
-  explosionForce: 100
+  explosionRadius: 10
+  explosionForce: 6
   fuseOnAwake: 1
   fuseOnCollision: 0
   applyPhysicsToRigidbodys: 1
