@@ -321,6 +321,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1958277367}
+  - component: {fileID: 1958277369}
   - component: {fileID: 1958277366}
   - component: {fileID: 1958277365}
   - component: {fileID: 1958277368}
@@ -389,13 +390,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1958277364}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 7.07, z: -10.15}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &1958277368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,6 +429,22 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1958277369
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958277364}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89df9c40f476ceb48ab6145e49c51dcb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camTransform: {fileID: 0}
+  shakeDuration: 0
+  shakeAmount: 0.7
+  decreaseFactor: 1
 --- !u!1 &1984245299
 GameObject:
   m_ObjectHideFlags: 0
@@ -440,6 +457,7 @@ GameObject:
   - component: {fileID: 1984245302}
   - component: {fileID: 1984245301}
   - component: {fileID: 1984245300}
+  - component: {fileID: 1984245304}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -523,3 +541,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1984245304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984245299}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf606c6044770c14fa8f5178d469edbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  throwButton: 273
+  grenades:
+  - {fileID: 7959298838370294567, guid: 6c1fef160ab5d404392eac2d50abff87, type: 3}
+  startAmountGrenades: 2
+  throwForce: 20

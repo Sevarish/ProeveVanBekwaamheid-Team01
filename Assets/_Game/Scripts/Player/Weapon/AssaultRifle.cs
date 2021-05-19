@@ -9,6 +9,7 @@ public class AssaultRifle : MonoBehaviour
     public GameObject bulletPrefab; //Visual only.
     public GameObject sourceEmitter;
     private ParticleSystem bParticle;
+    private ScreenShakeManager screenShake;
     public int clipCapacity = 32, clips = 7;
     [HideInInspector]
     public int fullCapacity = 0;
@@ -23,6 +24,7 @@ public class AssaultRifle : MonoBehaviour
 
     private void Start()
     {
+        screenShake = FindObjectOfType<ScreenShakeManager>();
         if (transform.CompareTag("Player"))
         {
             Quaternion rotParent = sourceEmitter.transform.parent.rotation;
@@ -39,17 +41,14 @@ public class AssaultRifle : MonoBehaviour
         var MuzzleFlash = Instantiate(muzzleFlashPrefab, sourceEmitter.transform.position, rotParent);
         MuzzleFlash.transform.SetParent(sourceEmitter.transform.parent);
         Destroy(MuzzleFlash, 0.2f);
+        screenShake.Shake(0.1f, 0.03f);
 
-
-        Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
+        //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).
         RaycastHit hit;
         if (Physics.Raycast(sourceEmitter.transform.position, sourceEmitter.transform.forward, out hit, Mathf.Infinity))
         {
-            if (hit.transform.CompareTag(targetTag))
-            {
-                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
-            }
+            hit.transform.gameObject.GetComponent<Damageable>()?.TakeDamage();
         }
     }
 
