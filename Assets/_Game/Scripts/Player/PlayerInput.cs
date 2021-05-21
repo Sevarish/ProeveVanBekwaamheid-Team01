@@ -44,10 +44,12 @@ public class PlayerInput : MonoBehaviour
     private int currentHK416Clip, currentX26Clip, fullHK416Cap;
     private bool isReloading = false;
     private float reloadTimer, reloadTimeCap = 2.5f;
-    private float shootTimerAR = 0, shootTimerTA = 0;
+    private float shootTimerAR = 0.12f, shootTimerTA = 10;
 
     [SerializeField]
     private TMP_Text ammunitionText;
+    [SerializeField]
+    private Slider reloadSlider;
 
     private void Start()
     {
@@ -64,6 +66,9 @@ public class PlayerInput : MonoBehaviour
     {
         shootTimerAR += Time.deltaTime;
         shootTimerTA += Time.deltaTime;
+
+        UpdateSlider();
+
         if (!controller)
         { //When Mouse and Keyboard mode is active (Controller=talse)
             if (Input.GetKey(moveLeft)) { MoveLeft(); }
@@ -229,6 +234,18 @@ public class PlayerInput : MonoBehaviour
         if (player.currentWeapon == 1)
         {
             ammunitionText.text = currentX26Clip + "/0";
+        }
+    }
+
+    private void UpdateSlider()
+    {
+        if (player.currentWeapon == 0)
+        {
+            reloadSlider.value = shootTimerAR / player.HK416.GetFireRate();
+        }
+        if (player.currentWeapon == 1)
+        {
+            reloadSlider.value = shootTimerTA / player.X26.GetFireRate();
         }
     }
 }
