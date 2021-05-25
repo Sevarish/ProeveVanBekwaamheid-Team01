@@ -56,9 +56,6 @@ public class SoundManager : MonoBehaviour
 				RandomMusic(musicTracks);
 			}
 		}
-
-
-		
 	}
 
 	// Play a single clip through the sound effects source.
@@ -66,7 +63,7 @@ public class SoundManager : MonoBehaviour
 	{
 		EffectsSource.volume = effectsVolume;
 		EffectsSource.clip = clip;
-		EffectsSource.Play();
+		EffectsSource.PlayOneShot(EffectsSource.clip);
 	}
 
 	public void StopSoundEffect()
@@ -94,7 +91,7 @@ public class SoundManager : MonoBehaviour
 
 		EffectsSource.volume = effectsVolume;
 		EffectsSource.clip = clips[randomIndex];
-		EffectsSource.Play();
+		EffectsSource.PlayOneShot(EffectsSource.clip);
 	}
 
 	public void RandomMusic(AudioClip[] clips)

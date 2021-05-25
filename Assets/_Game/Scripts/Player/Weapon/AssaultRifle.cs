@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AssaultRifle : MonoBehaviour
 {
-
     public GameObject muzzleFlashPrefab;
     public GameObject bulletPrefab; //Visual only.
     public GameObject sourceEmitter;
@@ -16,6 +15,8 @@ public class AssaultRifle : MonoBehaviour
     public string targetTag;
 
     private readonly float fireRate = 0.12f;
+
+    public AudioClip shootSfx;
 
     private void Awake()
     {
@@ -42,6 +43,7 @@ public class AssaultRifle : MonoBehaviour
         MuzzleFlash.transform.SetParent(sourceEmitter.transform.parent);
         Destroy(MuzzleFlash, 0.2f);
         screenShake.Shake(0.1f, 0.03f);
+        SoundManager.Instance.Play(shootSfx);
 
         //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).

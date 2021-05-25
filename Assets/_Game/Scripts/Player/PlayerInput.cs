@@ -239,6 +239,8 @@ public class PlayerInput : MonoBehaviour
 
     private void UpdateSlider()
     {
+        if (reloadSlider == null)
+            return;
         if (player.currentWeapon == 0)
         {
             reloadSlider.value = shootTimerAR / player.HK416.GetFireRate();

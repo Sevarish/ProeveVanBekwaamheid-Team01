@@ -428,6 +428,7 @@ MonoBehaviour:
   slider: {fileID: 6070101288629818450}
   agent: {fileID: 0}
   despawnPos: {x: -61, y: 0.55, z: -1}
+  rescueSfx: {fileID: 8300000, guid: cbb11324cb4adb8419f630cc66afb6c7, type: 3}
 --- !u!33 &6070101289813485048
 MeshFilter:
   m_ObjectHideFlags: 0

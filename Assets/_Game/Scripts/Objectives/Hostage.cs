@@ -20,6 +20,8 @@ public class Hostage : MonoBehaviour, Interactable
 
     private Transform currentInteractObject;
 
+    public AudioClip rescueSfx;
+
     public void Interact(Transform objectThatInteracted)
     {
         EnteredInteractRange?.Invoke();
@@ -55,11 +57,13 @@ public class Hostage : MonoBehaviour, Interactable
     private IEnumerator StartFreeingHostage()
     {
         isSaving = true;
+        SoundManager.Instance.Play(rescueSfx);
         while (currentInteractObject != null)
         {
             slider.transform.gameObject.SetActive(true);
             if (Vector3.Distance(transform.position, currentInteractObject.position) > interactRange)
             {
+                SoundManager.Instance.StopSoundEffect();
                 releaseTime = oldReleaseTime;
                 OutOfRange?.Invoke();
                 slider.transform.gameObject.SetActive(false);
