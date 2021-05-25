@@ -57,13 +57,13 @@ public class Hostage : MonoBehaviour, Interactable
     private IEnumerator StartFreeingHostage()
     {
         isSaving = true;
-        SoundManager.Instance.Play(rescueSfx);
+        SoundManager.Instance.Play(rescueSfx, 0.1f);
         while (currentInteractObject != null)
         {
             slider.transform.gameObject.SetActive(true);
             if (Vector3.Distance(transform.position, currentInteractObject.position) > interactRange)
             {
-                SoundManager.Instance.StopSoundEffect();
+                SoundManager.Instance.StopSoundEffect(rescueSfx);
                 releaseTime = oldReleaseTime;
                 OutOfRange?.Invoke();
                 slider.transform.gameObject.SetActive(false);

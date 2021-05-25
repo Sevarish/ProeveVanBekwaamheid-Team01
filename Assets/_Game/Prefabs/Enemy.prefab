@@ -153,7 +153,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cb192d3780731b34ebc995c7fc174299, type: 3}
   - {fileID: 8300000, guid: 72fdb464979d6cb4781d45e82afb3412, type: 3}
   - {fileID: 8300000, guid: 1397299753d282b4f8c443c34422ebaa, type: 3}
-  - {fileID: 8300000, guid: 5a38cde850bc6944f811a2ba09c571e5, type: 3}
   - {fileID: 8300000, guid: 6eff0dc795115ba4eaafb0efcad19530, type: 3}
   - {fileID: 8300000, guid: 455719c428d8e8e47af8e854b7450af9, type: 3}
   - {fileID: 8300000, guid: 6dbe5e7758c508e4d997b1880560cd23, type: 3}
@@ -244,6 +243,7 @@ MonoBehaviour:
   clips: 7
   fullCapacity: 0
   targetTag: Player
+  shootSfx: {fileID: 0}
 --- !u!1 &2958067720998144360
 GameObject:
   m_ObjectHideFlags: 0

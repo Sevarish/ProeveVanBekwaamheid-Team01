@@ -3522,6 +3522,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1483225736211501500, guid: 4f679cce37b3fd24dadf1d00baa0ac56, type: 3}
+      propertyPath: effectsVolume
+      value: 0.25
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f679cce37b3fd24dadf1d00baa0ac56, type: 3}
 --- !u!1001 &877010714
@@ -5728,6 +5732,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1444061266}
     - target: {fileID: 2958067720687719042, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
+      propertyPath: maxRadius
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958067720687719042, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
+      propertyPath: originalRadius
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2958067720687719042, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: corpse.Array.size
       value: 0
       objectReference: {fileID: 0}
@@ -5873,7 +5885,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2958067720687719043, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[0].x
-      value: -28.080238
+      value: -25.4
       objectReference: {fileID: 0}
     - target: {fileID: 2958067720687719043, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[0].y
@@ -5885,7 +5897,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2958067720687719043, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[1].x
-      value: -28.247501
+      value: -24.2
       objectReference: {fileID: 0}
     - target: {fileID: 2958067720687719043, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[1].y
@@ -6832,8 +6844,8 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 50
-  m_Range: 15
-  m_SpotAngle: 50
+  m_Range: 20
+  m_SpotAngle: 90
   m_InnerSpotAngle: 0
   m_CookieSize: 10
   m_Shadows:
@@ -7598,7 +7610,6 @@ MonoBehaviour:
   - {fileID: 8300000, guid: cb192d3780731b34ebc995c7fc174299, type: 3}
   - {fileID: 8300000, guid: 72fdb464979d6cb4781d45e82afb3412, type: 3}
   - {fileID: 8300000, guid: 1397299753d282b4f8c443c34422ebaa, type: 3}
-  - {fileID: 8300000, guid: 5a38cde850bc6944f811a2ba09c571e5, type: 3}
   - {fileID: 8300000, guid: 6eff0dc795115ba4eaafb0efcad19530, type: 3}
   - {fileID: 8300000, guid: 455719c428d8e8e47af8e854b7450af9, type: 3}
   - {fileID: 8300000, guid: 6dbe5e7758c508e4d997b1880560cd23, type: 3}
@@ -8426,7 +8437,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: gameTimer
-      value: 120
+      value: 440
       objectReference: {fileID: 0}
     - target: {fileID: 2391825458837204690, guid: 0bb2234badf7aef439aeaaa28a2b26da, type: 3}
       propertyPath: textBeforeGameTimer
@@ -10342,6 +10353,7 @@ MonoBehaviour:
   clips: 7
   fullCapacity: 224
   targetTag: Enemy
+  shootSfx: {fileID: 0}
 --- !u!114 &2042523613
 MonoBehaviour:
   m_ObjectHideFlags: 0

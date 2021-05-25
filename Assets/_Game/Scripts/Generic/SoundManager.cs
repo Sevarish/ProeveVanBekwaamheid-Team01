@@ -11,6 +11,7 @@ public class SoundManager : MonoBehaviour
 	// Audio players components.
 	public AudioSource EffectsSource;
 	public AudioSource MusicSource;
+	private Dictionary<AudioClip, AudioSource> audioSources = new Dictionary<AudioClip, AudioSource>();
 
 	// Music tracks
 	public AudioClip[] musicTracks;
@@ -61,14 +62,44 @@ public class SoundManager : MonoBehaviour
 	// Play a single clip through the sound effects source.
 	public void Play(AudioClip clip)
 	{
-		EffectsSource.volume = effectsVolume;
-		EffectsSource.clip = clip;
-		EffectsSource.PlayOneShot(EffectsSource.clip);
+		bool hasClip = audioSources.ContainsKey(clip);
+        if (hasClip)
+        {
+			audioSources[clip].Play();
+        }
+        else
+        {
+			AudioSource newSrc = gameObject.AddComponent<AudioSource>();
+			newSrc.volume = effectsVolume;
+			newSrc.clip = clip;
+			newSrc.playOnAwake = false;
+			newSrc.loop = false;
+			audioSources.Add(clip, newSrc);
+			audioSources[clip].Play();
+        }
+	}
+	public void Play(AudioClip clip, float volume)
+	{
+		bool hasClip = audioSources.ContainsKey(clip);
+		if (hasClip)
+		{
+			audioSources[clip].Play();
+		}
+		else
+		{
+			AudioSource newSrc = gameObject.AddComponent<AudioSource>();
+			newSrc.volume = volume;
+			newSrc.clip = clip;
+			newSrc.playOnAwake = false;
+			newSrc.loop = false;
+			audioSources.Add(clip, newSrc);
+			audioSources[clip].Play();
+		}
 	}
 
-	public void StopSoundEffect()
+	public void StopSoundEffect(AudioClip clip)
     {
-		EffectsSource.Stop();
+		audioSources[clip].Stop();
     }
 
 	public void StopMusic()
@@ -89,9 +120,7 @@ public class SoundManager : MonoBehaviour
 	{
 		int randomIndex = Random.Range(0, clips.Length);
 
-		EffectsSource.volume = effectsVolume;
-		EffectsSource.clip = clips[randomIndex];
-		EffectsSource.PlayOneShot(EffectsSource.clip);
+		Play(clips[randomIndex]);
 	}
 
 	public void RandomMusic(AudioClip[] clips)
