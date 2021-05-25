@@ -17,6 +17,8 @@ public class Player : MonoBehaviour, Damageable
     public bool Died;
     private GameObject visionCone;
     public Action GameOver;
+    public AudioClip[] hurtSfx;
+    public AudioClip[] deathSfx;
     public int currentWeapon; //0 is HK416, 1 is Taser
 
     private void SetVision()
@@ -43,8 +45,12 @@ public class Player : MonoBehaviour, Damageable
 
         if (health <= 0)
         {
+            SoundManager.Instance.RandomSoundEffect(deathSfx);
             Invoke(nameof(DestroyPlayer), 0.5f);
             GameOver?.Invoke();
+        } else
+        {
+            SoundManager.Instance.RandomSoundEffect(hurtSfx);
         }
     }
 
@@ -56,8 +62,12 @@ public class Player : MonoBehaviour, Damageable
 
         if (health <= 0)
         {
+            SoundManager.Instance.RandomSoundEffect(deathSfx);
             Invoke(nameof(DestroyPlayer), 0.5f);
             GameOver?.Invoke();
+        } else
+        {
+            SoundManager.Instance.RandomSoundEffect(hurtSfx);
         }
     }
 
