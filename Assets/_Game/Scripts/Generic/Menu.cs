@@ -2,13 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class Menu : MonoBehaviour
 {
     public GameObject target;
     public float rotationsPerSecond;
 
+    private AsyncOperation loadData;
+    public Slider progressSlider;
+    public TMP_Text text;
+
     public string controlsSceneName = "Controls", gameName = "Game";
+
+    private void Start()
+    {
+        LoadGame();
+    }
 
     public void GoToControlScheme()
     {
@@ -20,20 +31,28 @@ public class Menu : MonoBehaviour
         Application.Quit();
     }
 
-    public void StartGame()
+    public void LoadGame()
     {
-        SceneManager.LoadScene(gameName);
+        loadData = SceneManager.LoadSceneAsync(gameName, LoadSceneMode.Single);
+        loadData.allowSceneActivation = false;
     }
 
     private void Update()
     {
         RotateCam();
-        
-        if (Input.GetKeyUp(KeyCode.Space))
+
+        if (SceneManager.GetActiveScene().name == controlsSceneName)
+        { 
+        progressSlider.value = loadData.progress;
+        if (loadData.progress >= 0.9f)
         {
-            if (SceneManager.GetActiveScene().name == controlsSceneName)
+            progressSlider.gameObject.SetActive(false);
+            text.gameObject.SetActive(true);
+        }
+
+            if (Input.GetKeyUp(KeyCode.Space) && loadData.progress >= 0.9f)
             {
-                StartGame();
+                loadData.allowSceneActivation = true;
             }
         }
     }
