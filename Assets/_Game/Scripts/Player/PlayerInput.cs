@@ -95,6 +95,11 @@ public class PlayerInput : MonoBehaviour
             {
                 player.HK416.StopPtcl();
             }
+
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+            {
+                isReloading = true;
+            }
         }
         else //When controller mode is active (Controller=true)
         {
@@ -209,8 +214,8 @@ public class PlayerInput : MonoBehaviour
     private void ReloadComplete()
     {
         isReloading = false;
+        fullHK416Cap -= (player.HK416.clipCapacity - currentHK416Clip);
         currentHK416Clip = player.HK416.clipCapacity;
-        fullHK416Cap -= player.HK416.clipCapacity;
         UpdateUI();
     }
 
