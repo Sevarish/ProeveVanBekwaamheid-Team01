@@ -217,11 +217,11 @@ public class PlayerInput : MonoBehaviour
     //The general function to interact with interactable objects within range (interactRange).
     private void Interact()
     {
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, playerVisual.transform.forward, interactRange);
-
-        foreach (RaycastHit hit in hits)
+        
+        RaycastHit[] hits = Physics.SphereCastAll(transform.position, interactRange, new Vector3(0, 0.1f, 0));
+        foreach(RaycastHit hit in hits)
         {
-            hit.transform.gameObject.GetComponent<Interactable>()?.Interact(transform);
+            hit.collider.gameObject.GetComponent<Interactable>()?.Interact(transform);
         }
     }
 
