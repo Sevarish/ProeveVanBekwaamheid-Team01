@@ -224,8 +224,11 @@ public class EnemyAI : MonoBehaviour, Damageable
     
     private void DestroyEnemy()
     {
-        Fov.dropBody = true;
-        EnemyDeath?.Invoke();
+        enemyAnim.enabled = false;
+        Fov.enabled = false;
+        enabled = false;
+        //Fov.dropBody = true;
+        //EnemyDeath?.Invoke();
     }
 
     void Damageable.TakeDamage()
