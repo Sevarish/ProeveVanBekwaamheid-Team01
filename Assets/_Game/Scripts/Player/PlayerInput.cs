@@ -96,7 +96,7 @@ public class PlayerInput : MonoBehaviour
                 player.HK416.StopPtcl();
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading && fullHK416Cap > 0)
             {
                 isReloading = true;
             }
@@ -214,8 +214,25 @@ public class PlayerInput : MonoBehaviour
     private void ReloadComplete()
     {
         isReloading = false;
-        fullHK416Cap -= (player.HK416.clipCapacity - currentHK416Clip);
-        currentHK416Clip = player.HK416.clipCapacity;
+        if (fullHK416Cap < 32)
+        {
+            int x = (player.HK416.clipCapacity - currentHK416Clip);
+            if (x > fullHK416Cap)
+            {
+                x = fullHK416Cap;
+                fullHK416Cap = 0;
+                currentHK416Clip = x;
+            } else
+            {
+                fullHK416Cap -= (player.HK416.clipCapacity - currentHK416Clip);
+                currentHK416Clip = player.HK416.clipCapacity;
+            }
+        } else
+        {
+            fullHK416Cap -= (player.HK416.clipCapacity - currentHK416Clip);
+            currentHK416Clip = player.HK416.clipCapacity;
+        }
+        
         UpdateUI();
     }
 
