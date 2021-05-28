@@ -2161,9 +2161,10 @@ MonoBehaviour:
   releaseTime: 6
   interactRange: 2
   slider: {fileID: 6070101288629818450}
-  agent: {fileID: 0}
+  agent: {fileID: -7728050033888517913}
   despawnPos: {x: -61, y: 0.55, z: -1}
   anim: {fileID: 4820247548241854780}
+  rescueSfx: {fileID: 8300000, guid: cbb11324cb4adb8419f630cc66afb6c7, type: 3}
 --- !u!195 &-7728050033888517913
 NavMeshAgent:
   m_ObjectHideFlags: 0

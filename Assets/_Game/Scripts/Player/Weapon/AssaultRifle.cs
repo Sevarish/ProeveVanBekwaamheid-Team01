@@ -45,7 +45,7 @@ public class AssaultRifle : MonoBehaviour
         screenShake.Shake(0.1f, 0.03f);
         SoundManager.Instance.Play(shootSfx);
 
-        //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.black, 1);
+        //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.cyan, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).
         RaycastHit hit;
         if (Physics.Raycast(sourceEmitter.transform.position, sourceEmitter.transform.forward, out hit, Mathf.Infinity))

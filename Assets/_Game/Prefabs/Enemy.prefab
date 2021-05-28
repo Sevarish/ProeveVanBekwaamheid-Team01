@@ -933,6 +933,7 @@ GameObject:
   - component: {fileID: 3403852366267542740}
   - component: {fileID: 2168317921264873295}
   - component: {fileID: 6244866946971728691}
+  - component: {fileID: 7449294876925990118}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -990,7 +991,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   agent: {fileID: 6353843586906857111}
-  enemyAnim: {fileID: 0}
+  enemyAnim: {fileID: 1628761804981315141}
   _sightDistance: 14
   _attackRange: 8
   _walkpointRange: 20
@@ -1008,6 +1009,48 @@ MonoBehaviour:
   foundPlayer: 0
   alertedPatrolling: 0
   points: []
+  hurtSfx:
+  - {fileID: 8300000, guid: a88c6f733d72d77418c3a0300cf15ac0, type: 3}
+  - {fileID: 8300000, guid: 260de9edcae1d8e4a94774066e2b8571, type: 3}
+  - {fileID: 8300000, guid: 915d7d4442055bf40ab4e07c03daa01e, type: 3}
+  - {fileID: 8300000, guid: 4ff3622d95283b34d9dab09861cbb378, type: 3}
+  - {fileID: 8300000, guid: a38086ed4f4651d4b9434673141cd6d2, type: 3}
+  - {fileID: 8300000, guid: 19959bd90d3ee4c488f09191ed675459, type: 3}
+  - {fileID: 8300000, guid: cef6625e47e475e4298b8037be872a73, type: 3}
+  - {fileID: 8300000, guid: 6317f1ea97f1c9541a9526051a023b67, type: 3}
+  - {fileID: 8300000, guid: cf71a36603331784c8633866b2e6168d, type: 3}
+  - {fileID: 8300000, guid: df0f35cb220d1fd4db4cf4efdc88c3bd, type: 3}
+  - {fileID: 8300000, guid: 7dc01b441601bc24f84aaf9022ecd1c3, type: 3}
+  - {fileID: 8300000, guid: f3e76276aa85b2a479d5f7ed17706610, type: 3}
+  - {fileID: 8300000, guid: 5bc7af0b1f6eb084a8d92e162c951b88, type: 3}
+  - {fileID: 8300000, guid: 0f78db719bbae5543991b325888db5e2, type: 3}
+  - {fileID: 8300000, guid: 65a29ee39f6028a4bb0e02c730af81da, type: 3}
+  - {fileID: 8300000, guid: 31cd04e9df2c81348a45642232814e95, type: 3}
+  - {fileID: 8300000, guid: bd6179f64e88193498a54a6abcbf55d4, type: 3}
+  - {fileID: 8300000, guid: c2c204a16a560a344b89d74f976bc2bd, type: 3}
+  - {fileID: 8300000, guid: d07c9f5e55e99e845bc32d138439f0d8, type: 3}
+  - {fileID: 8300000, guid: 13da5ca502e588b4d85930b949e19e84, type: 3}
+  - {fileID: 8300000, guid: e8e1c05b49955964b8111681472a04b9, type: 3}
+  - {fileID: 8300000, guid: a65a64a3a73bd6e42b1298c41444f74a, type: 3}
+  - {fileID: 8300000, guid: d0f26f95df04b8c4c8f09015c3b2a5da, type: 3}
+  - {fileID: 8300000, guid: 93790064199d9854187a03ecaef2e97b, type: 3}
+  - {fileID: 8300000, guid: c7b24fe340ca61e48a25901d95cb5d98, type: 3}
+  - {fileID: 8300000, guid: 129c506fe79b91a47b64a96860210cac, type: 3}
+  - {fileID: 8300000, guid: ca03b64f9ea9c3949839320cf8be0e2b, type: 3}
+  - {fileID: 8300000, guid: c9233f0657115ba468e813abb1b2c23d, type: 3}
+  deathSfx:
+  - {fileID: 8300000, guid: 40d7383c911a40d459d410788b5715b5, type: 3}
+  - {fileID: 8300000, guid: cb192d3780731b34ebc995c7fc174299, type: 3}
+  - {fileID: 8300000, guid: 72fdb464979d6cb4781d45e82afb3412, type: 3}
+  - {fileID: 8300000, guid: 1397299753d282b4f8c443c34422ebaa, type: 3}
+  - {fileID: 8300000, guid: 6eff0dc795115ba4eaafb0efcad19530, type: 3}
+  - {fileID: 8300000, guid: 455719c428d8e8e47af8e854b7450af9, type: 3}
+  - {fileID: 8300000, guid: 6dbe5e7758c508e4d997b1880560cd23, type: 3}
+  - {fileID: 8300000, guid: 1f2ad613a95d11c4c9b3f8264be90ac1, type: 3}
+  - {fileID: 8300000, guid: 96968a4c0547f4345a8b1ec6f7cb5c85, type: 3}
+  - {fileID: 8300000, guid: 422fe20055190a14aba4772a34c56806, type: 3}
+  - {fileID: 8300000, guid: ae48d06ce450aca4d970e10e70234e2e, type: 3}
+  - {fileID: 8300000, guid: a3000c0d3701dea4c9848482b54d31c7, type: 3}
 --- !u!114 &2168317921264873295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1049,12 +1092,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlashPrefab: {fileID: 283144399180600801, guid: fcba14f5a70f5254c8c1d09db2bbb86b, type: 3}
-  bulletPrefab: {fileID: 0}
+  bulletPrefab: {fileID: 2591682857010185746, guid: 627402ea0ea87c84cad1d7c09ebffc99, type: 3}
   sourceEmitter: {fileID: 2958067720998144360}
   clipCapacity: 32
   clips: 7
   fullCapacity: 0
   targetTag: Player
+  shootSfx: {fileID: 0}
+--- !u!65 &7449294876925990118
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2958067720687719052}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.7171518, z: 1}
+  m_Center: {x: 0, y: 0.8531093, z: 0}
 --- !u!1 &2958067720998144360
 GameObject:
   m_ObjectHideFlags: 0
