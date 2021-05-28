@@ -60,6 +60,9 @@ public class EnemyAI : MonoBehaviour, Damageable
     public EnemyFov Fov;
     public AssaultRifle attacking;
 
+    public AudioClip[] hurtSfx;
+    public AudioClip[] deathSfx;
+
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
@@ -209,7 +212,11 @@ public class EnemyAI : MonoBehaviour, Damageable
 
         if (health <= 0)
         {
+            SoundManager.Instance.RandomSoundEffect(deathSfx);
             Invoke(nameof(DestroyEnemy), 0.5f);
+        } else
+        {
+            SoundManager.Instance.RandomSoundEffect(hurtSfx);
         }
     }
 }

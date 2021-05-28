@@ -95,6 +95,11 @@ public class PlayerInput : MonoBehaviour
             {
                 player.HK416.StopPtcl();
             }
+
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading)
+            {
+                isReloading = true;
+            }
         }
         else //When controller mode is active (Controller=true)
         {
@@ -209,8 +214,8 @@ public class PlayerInput : MonoBehaviour
     private void ReloadComplete()
     {
         isReloading = false;
+        fullHK416Cap -= (player.HK416.clipCapacity - currentHK416Clip);
         currentHK416Clip = player.HK416.clipCapacity;
-        fullHK416Cap -= player.HK416.clipCapacity;
         UpdateUI();
     }
 
@@ -239,6 +244,8 @@ public class PlayerInput : MonoBehaviour
 
     private void UpdateSlider()
     {
+        if (reloadSlider == null)
+            return;
         if (player.currentWeapon == 0)
         {
             reloadSlider.value = shootTimerAR / player.HK416.GetFireRate();
