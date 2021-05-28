@@ -45,6 +45,9 @@ public class PlayerInput : MonoBehaviour
     private bool isReloading = false;
     private float reloadTimer, reloadTimeCap = 2.5f;
     private float shootTimerAR = 0.12f, shootTimerTA = 10;
+    private bool isMoving = false;
+
+    public Animator playerAnim;
 
     [SerializeField]
     private TMP_Text ammunitionText;
@@ -71,10 +74,15 @@ public class PlayerInput : MonoBehaviour
 
         if (!controller)
         { //When Mouse and Keyboard mode is active (Controller=talse)
-            if (Input.GetKey(moveLeft)) { MoveLeft(); }
-            if (Input.GetKey(moveRight)) { MoveRight(); }
-            if (Input.GetKey(moveUp)) { MoveUp(); }
-            if (Input.GetKey(moveDown)) { MoveDown(); }
+            if (Input.GetKey(moveLeft)) { MoveLeft();}
+            if (Input.GetKey(moveRight)) { MoveRight();}
+            if (Input.GetKey(moveUp)) { MoveUp();}
+            if (Input.GetKey(moveDown)) { MoveDown();}
+
+            if (Input.GetKey(moveDown) || Input.GetKey(moveUp) || Input.GetKey(moveLeft) || Input.GetKey(moveRight))
+            {
+                playerAnim.SetBool("isWalking", true);
+            } else playerAnim.SetBool("isWalking", false);
             Aim();
 
             if (Input.GetKeyDown(switchWeapon) && !isReloading)
@@ -93,6 +101,7 @@ public class PlayerInput : MonoBehaviour
                 Shoot();
             } else
             {
+                playerAnim.SetBool("isShooting", false);
                 player.HK416.StopPtcl();
             }
 
@@ -114,6 +123,7 @@ public class PlayerInput : MonoBehaviour
             {
                 Shoot();
             }
+            else playerAnim.SetBool("isShooting", false);
         }
 
         if (isReloading)
@@ -128,10 +138,10 @@ public class PlayerInput : MonoBehaviour
     }
     //MOUSE AND KEYBOARD
     //Movement for Mouse and Keyboard input. Will run when controller is false.
-    private void MoveLeft() { player.transform.Translate(-player.speed * Time.deltaTime, 0, 0); }
-    private void MoveRight() { player.transform.Translate(player.speed * Time.deltaTime, 0, 0); }
-    private void MoveUp() { player.transform.Translate(0, 0, player.speed * Time.deltaTime); }
-    private void MoveDown() { player.transform.Translate(0, 0, -player.speed * Time.deltaTime); }
+    private void MoveLeft() { player.transform.Translate(-player.speed * Time.deltaTime, 0, 0);}
+    private void MoveRight() { player.transform.Translate(player.speed * Time.deltaTime, 0, 0);}
+    private void MoveUp() { player.transform.Translate(0, 0, player.speed * Time.deltaTime);}
+    private void MoveDown() { player.transform.Translate(0, 0, -player.speed * Time.deltaTime);}
 
     //Moves the aim (crosshair) to the mouse's world position. Also rotates the player's visual object towards the crosshair.
     private void Aim()
@@ -186,6 +196,7 @@ public class PlayerInput : MonoBehaviour
     //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
     private void Shoot()
     {
+        playerAnim.SetBool("isShooting", true);
         if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0 )
         {
             player.HK416.Shoot(); //Assault Rifle

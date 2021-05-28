@@ -15,10 +15,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     //a point with the current ground compared to scene view.
     //Game view cannot be used for this!
 
-    public NavMeshAgent agent;
-
-    //[SerializeField]
-    //private Animator enemyAnim;
+    public NavMeshAgent agent;  
+    public Animator enemyAnim;
 
     [SerializeField]
     private float _sightDistance,
@@ -30,7 +28,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     private bool playerInsideRange,
                  playerInsideAttackRange,
                  alreadyAttacked,
-                 walkpointSet;
+                 walkpointSet,
+                 walkpointFlashed;
 
     [SerializeField]
     private Transform player;
@@ -57,8 +56,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     private int destPoint = 0;
 
     public Action EnemyDeath;
-    public EnemyFov Fov;
-    public AssaultRifle attacking;
+    private EnemyFov Fov;
+    private AssaultRifle attacking;
 
     public AudioClip[] hurtSfx;
     public AudioClip[] deathSfx;
@@ -71,6 +70,7 @@ public class EnemyAI : MonoBehaviour, Damageable
         attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
         StartCoroutine(GetDelayedPos());
+        StartCoroutine(FlashedEffect());
     }
 
     private IEnumerator GetDelayedPos()
@@ -79,6 +79,44 @@ public class EnemyAI : MonoBehaviour, Damageable
         {
             delayedPlayerPos = player.transform.position;
             yield return new WaitForSeconds(0.5f);
+        }
+    }
+
+    public IEnumerator FlashedEffect()
+    {
+        agent.SetDestination(transform.position);
+        yield return new WaitForSeconds(2f);
+    }
+
+    public void Flashed()
+    {
+        if (!walkpointFlashed)
+        {
+            float randomX = UnityEngine.Random.Range(-2, 2);
+            float randomZ = UnityEngine.Random.Range(-2, 2);
+            walkpoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+            if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointFlashed = true;
+
+            FlashedBehaviour();
+        }
+    }
+
+    private void FlashedBehaviour()
+    {
+        if (walkpointFlashed)
+        {
+            print("test");
+            agent.SetDestination(walkpoint);
+
+            Vector3 distanceToWalkPoint = transform.position - walkpoint;
+
+            if (distanceToWalkPoint.magnitude < 1f) { walkpointFlashed = false; }
+        }
+
+        if (alertedPatrolling == false)
+        {
+            alertedPatrolling = true;
         }
     }
 
@@ -107,7 +145,7 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     public void Checkpoints()
     {
-        //enemyAnim.Play("Walking");
+        enemyAnim.SetBool("isShooting", false);
 
         // Returns if no points have been set up
         if (points.Count == 0)
@@ -125,7 +163,7 @@ public class EnemyAI : MonoBehaviour, Damageable
         agent.speed = walkSpeed;
 
         //enemyAnim.Play("Patroling");
-
+        enemyAnim.SetBool("isShooting", false);
 
         if (!walkpointSet) SearchWalkPoint();
         if (walkpointSet) agent.SetDestination(walkpoint);
@@ -153,29 +191,30 @@ public class EnemyAI : MonoBehaviour, Damageable
         if (playerInsideRange) Fov.isInFov = true;
         else { foundPlayer = false; Fov.isInFov = false; }
         agent.speed = runSpeed;
+
         agent.SetDestination(player.position);
-        // enemyAnim.Play("Running");
 
         if (playerInsideAttackRange)
         {
             Attacking();
         }
-
+        
     }
 
     public void Attacking()
     {
+        enemyAnim.SetBool("isShooting", true);
         agent.SetDestination(transform.position);
         transform.LookAt(delayedPlayerPos);
 
-        float timeBetweenAttacks = 1f;
-        if (!alreadyAttacked)
-        {
-            attacking.Shoot();
+         float timeBetweenAttacks = 1f;
+         if (!alreadyAttacked)
+         {
+             attacking.Shoot();
 
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
+             alreadyAttacked = true;
+             Invoke(nameof(ResetAttack), timeBetweenAttacks);
+         }
     }
 
     private void ResetAttack()
@@ -187,21 +226,6 @@ public class EnemyAI : MonoBehaviour, Damageable
     {
         Fov.dropBody = true;
         EnemyDeath?.Invoke();
-    }
-
-    public void Flashed()
-    {
-        if (!walkpointSet)
-        {
-            float randomX = UnityEngine.Random.Range(-2, 2);
-            float randomZ = UnityEngine.Random.Range(-2, 2);
-
-            walkpoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-            if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointSet = true; ;
-        }
-
-        if (walkpointSet) agent.SetDestination(walkpoint);
     }
 
     void Damageable.TakeDamage()

@@ -29,7 +29,7 @@ public class ThrowManager : MonoBehaviour
         if(grenadeAmmo > 0)
         {
             grenadeAmmo--;
-            GameObject thrownGrenade = Instantiate(grenades[currentGrenade], transform.position, transform.rotation);
+            GameObject thrownGrenade = Instantiate(grenades[currentGrenade], transform.position + (transform.forward * 2), transform.rotation);
             thrownGrenade.GetComponent<Grenade>().Throw(transform.forward, throwForce);
         }
     }
