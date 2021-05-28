@@ -17,6 +17,7 @@ public class Hostage : MonoBehaviour, Interactable
     private bool isSaving = false;
     public NavMeshAgent agent;
     public Vector3 despawnPos;
+    public Animator anim;
 
     private Transform currentInteractObject;
 
@@ -68,11 +69,11 @@ public class Hostage : MonoBehaviour, Interactable
             }
             if(releaseTime <= 0)
             {
+                anim.SetBool("isFree", true);
                 currentInteractObject = null;
                 SavedHostage?.Invoke();
                 slider.transform.gameObject.SetActive(false);
                 agent.SetDestination(despawnPos);
-                
             }
             releaseTime -= 0.10f;
             yield return new WaitForSeconds(0.10f);

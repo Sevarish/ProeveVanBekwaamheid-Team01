@@ -52,6 +52,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d6a1e38573aa9c41b0c9363fa309c87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthUI: {fileID: 0}
   health: 100
   damageTaken: 5
   speed: 8.5
@@ -74,7 +75,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   muzzleFlashPrefab: {fileID: 283144399180600801, guid: fcba14f5a70f5254c8c1d09db2bbb86b, type: 3}
+  bulletPrefab: {fileID: 0}
   sourceEmitter: {fileID: 3271156678591250018}
+  clipCapacity: 32
+  clips: 7
+  fullCapacity: 0
   targetTag: Enemy
 --- !u!114 &3271156677332696415
 MonoBehaviour:
@@ -90,6 +95,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPoint: {fileID: 3271156678188756075}
   playerEmitter: {fileID: 3271156678591250018}
+  clipCapacity: 3
 --- !u!135 &3271156677582100311
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -184,6 +190,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashLightKey: 101
   crossHair: {fileID: 3271156678188756079}
+  isTurnedOn: 1
+  flashLightUI: {fileID: 0}
   secondsBeforeStartingRefill: 3
   timeBetweenRefillTicks: 0.25
   refillEveryTick: 1
@@ -385,6 +393,7 @@ MonoBehaviour:
   groundLayer: 7
   interactRange: 4
   interactButton: 102
+  ammunitionText: {fileID: 0}
 --- !u!1 &3271156678188756075
 GameObject:
   m_ObjectHideFlags: 0
