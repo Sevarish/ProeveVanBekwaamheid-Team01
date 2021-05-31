@@ -62,6 +62,9 @@ public class EnemyAI : MonoBehaviour, Damageable
     public AudioClip[] hurtSfx;
     public AudioClip[] deathSfx;
     public List<Rigidbody> physicObjects = new List<Rigidbody>();
+    private int playerHealthOnKill = 5;
+    private bool enemyIsDead = false;
+    private int deadEnemyLayer = 8;
 
     private void Awake()
     {
@@ -236,12 +239,19 @@ public class EnemyAI : MonoBehaviour, Damageable
             physicToAdd.isKinematic = false;
             //physicToAdd.AddForce(new Vector3(0, -1, 0), ForceMode.Impulse);
             physicToAdd.velocity = new Vector3(0,0,0);
+            physicToAdd.transform.gameObject.layer = deadEnemyLayer;
         }
         enemyAnim.enabled = false;
         Fov.enabled = false;
         enabled = false;
-        //Fov.dropBody = true;w
-        //EnemyDeath?.Invoke();
+        
+
+        // restore player health
+        if (!enemyIsDead)
+        {
+            player.GetComponent<Player>().HealPlayer(playerHealthOnKill);
+            enemyIsDead = true;
+        }
     }
 
     void Damageable.TakeDamage()

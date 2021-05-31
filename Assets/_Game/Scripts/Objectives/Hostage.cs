@@ -47,7 +47,6 @@ public class Hostage : MonoBehaviour, Interactable
         if (agent.hasPath)
         {
             Vector3 distanceToEnd = transform.position - despawnPos;
-            Debug.Log(distanceToEnd.magnitude);
             if (distanceToEnd.magnitude < 1f)
             {
                 gameObject.SetActive(false);

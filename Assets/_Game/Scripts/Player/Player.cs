@@ -7,7 +7,9 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour, Damageable
 {
     public Slider healthUI;
-    public int health = 30;
+    public int maxHealth = 30;
+    [HideInInspector]
+    public int health;
     public int damageTaken = 10;
     public float speed = 8.5f,
                  vision,
@@ -20,6 +22,11 @@ public class Player : MonoBehaviour, Damageable
     public AudioClip[] hurtSfx;
     public AudioClip[] deathSfx;
     public int currentWeapon; //0 is HK416, 1 is Taser
+
+    private void Start()
+    {
+        health = maxHealth;
+    }
 
     private void SetVision()
     {
@@ -71,8 +78,24 @@ public class Player : MonoBehaviour, Damageable
         }
     }
 
+    public void HealPlayer(int heal)
+    {
+        health += heal;
+        UpdateHealthUI(health);
+    }
+
     private void UpdateHealthUI(int newHealth)
     {
         healthUI.value = newHealth;
+    }
+
+    private void ClampHealth()
+    {
+        health = Mathf.Clamp(health, 0, maxHealth);
+    }
+
+    private void Update()
+    {
+        ClampHealth();
     }
 }
