@@ -43,7 +43,7 @@ public class AssaultRifle : MonoBehaviour
         MuzzleFlash.transform.SetParent(sourceEmitter.transform.parent);
         Destroy(MuzzleFlash, 0.2f);
         screenShake.Shake(0.1f, 0.03f);
-        SoundManager.Instance.Play(shootSfx);
+        SoundManager.Instance.Play(shootSfx, 0.15f);
 
         //Debug.DrawRay(sourceEmitter.transform.position, sourceEmitter.transform.forward, Color.cyan, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).

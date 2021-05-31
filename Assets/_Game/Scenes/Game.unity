@@ -2155,6 +2155,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1483225736211501500, guid: 4f679cce37b3fd24dadf1d00baa0ac56, type: 3}
+      propertyPath: musicVolume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1483225736211501500, guid: 4f679cce37b3fd24dadf1d00baa0ac56, type: 3}
+      propertyPath: effectsVolume
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f679cce37b3fd24dadf1d00baa0ac56, type: 3}
 --- !u!1 &399372734
@@ -12881,6 +12889,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3142521787740691146, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: shootSfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 6470159b7fe81a9408ef7494858c141f, type: 3}
     - target: {fileID: 3142521787803281871, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: ammunitionText
       value: 
