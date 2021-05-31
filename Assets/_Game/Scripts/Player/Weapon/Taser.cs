@@ -19,7 +19,7 @@ public class Taser : MonoBehaviour
         {
             if (hit.transform.tag == "Enemy")
             {
-                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
+                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage(100);
             }
         }
     }

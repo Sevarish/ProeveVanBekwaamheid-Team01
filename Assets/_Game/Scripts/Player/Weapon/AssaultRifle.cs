@@ -50,7 +50,7 @@ public class AssaultRifle : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(sourceEmitter.transform.position, sourceEmitter.transform.forward, out hit, Mathf.Infinity))
         {
-            hit.transform.gameObject.GetComponent<Damageable>()?.TakeDamage();
+            hit.transform.gameObject.GetComponent<Damageable>()?.TakeDamage(25);
         }
     }
 

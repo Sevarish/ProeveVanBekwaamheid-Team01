@@ -55,7 +55,7 @@ public class Grenade : MonoBehaviour
             //Do Damage
             if(thisGrenadeType == GrenadeType.NormalGrenade)
             {
-                hit.transform.GetComponent<Damageable>()?.TakeDamage();
+                hit.transform.GetComponent<Damageable>()?.TakeDamage(50);
             }
             if (thisGrenadeType == GrenadeType.FlashGrenade)
             {

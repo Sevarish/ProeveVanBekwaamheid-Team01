@@ -276,7 +276,7 @@ public class PlayerInput : MonoBehaviour
             return;
         if (player.currentWeapon == 0)
         {
-            reloadSlider.value = shootTimerAR / player.HK416.GetFireRate();
+            reloadSlider.value = reloadTimer / reloadTimeCap;
         }
         if (player.currentWeapon == 1)
         {

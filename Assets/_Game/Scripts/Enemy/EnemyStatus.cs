@@ -6,11 +6,10 @@ public class EnemyStatus : MonoBehaviour, Damageable
 {
     private int health = 100;
     [SerializeField]
-    private int healthLossPerHit = 10;
 
-    public void TakeDamage()
+    public void TakeDamage(int _amount)
     {
-        health -= healthLossPerHit;
+        health -= _amount;
         Debug.Log(health);
     }
 }

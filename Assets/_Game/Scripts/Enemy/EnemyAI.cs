@@ -231,14 +231,15 @@ public class EnemyAI : MonoBehaviour, Damageable
         //EnemyDeath?.Invoke();
     }
 
-    void Damageable.TakeDamage()
+    void Damageable.TakeDamage(int _amount)
     {
         agent.SetDestination(player.transform.position);
 
-        health -= damage;
-
+        health -= _amount;
+        Debug.Log(_amount);
         if (health <= 0)
         {
+            Debug.Log("Death");
             SoundManager.Instance.RandomSoundEffect(deathSfx);
             Invoke(nameof(DestroyEnemy), 0.5f);
         } else

@@ -7,8 +7,7 @@ using UnityEngine.UI;
 public class Player : MonoBehaviour, Damageable
 {
     public Slider healthUI;
-    public int health = 30;
-    public int damageTaken = 10;
+    public int health = 200;
     public float speed = 8.5f,
                  vision,
                  flashBatteryLife;
@@ -40,23 +39,6 @@ public class Player : MonoBehaviour, Damageable
     public void TakeDamage(int _amount)
     {
         health -= _amount;
-
-        UpdateHealthUI(health);
-
-        if (health <= 0)
-        {
-            SoundManager.Instance.RandomSoundEffect(deathSfx);
-            Invoke(nameof(DestroyPlayer), 0.5f);
-            GameOver?.Invoke();
-        } else
-        {
-            SoundManager.Instance.RandomSoundEffect(hurtSfx);
-        }
-    }
-
-    public void TakeDamage()
-    {
-        health -= damageTaken;
 
         UpdateHealthUI(health);
 
