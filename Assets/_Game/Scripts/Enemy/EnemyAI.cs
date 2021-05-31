@@ -61,6 +61,7 @@ public class EnemyAI : MonoBehaviour, Damageable
 
     public AudioClip[] hurtSfx;
     public AudioClip[] deathSfx;
+    public List<Rigidbody> physicObjects = new List<Rigidbody>();
 
     private void Awake()
     {
@@ -71,6 +72,12 @@ public class EnemyAI : MonoBehaviour, Damageable
         //enemyAnim = GetComponent<Animator>();
         StartCoroutine(GetDelayedPos());
         StartCoroutine(FlashedEffect());
+        Rigidbody[] allRigids = gameObject.GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody rigid in allRigids)
+        {
+            physicObjects.Add(rigid);
+            rigid.isKinematic = true;
+        }
     }
 
     private IEnumerator GetDelayedPos()
@@ -224,10 +231,16 @@ public class EnemyAI : MonoBehaviour, Damageable
     
     private void DestroyEnemy()
     {
+        foreach (Rigidbody physicToAdd in physicObjects)
+        {
+            physicToAdd.isKinematic = false;
+            //physicToAdd.AddForce(new Vector3(0, -1, 0), ForceMode.Impulse);
+            physicToAdd.velocity = new Vector3(0,0,0);
+        }
         enemyAnim.enabled = false;
         Fov.enabled = false;
         enabled = false;
-        //Fov.dropBody = true;
+        //Fov.dropBody = true;w
         //EnemyDeath?.Invoke();
     }
 

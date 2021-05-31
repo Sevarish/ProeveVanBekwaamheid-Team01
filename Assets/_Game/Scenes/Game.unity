@@ -12885,6 +12885,10 @@ PrefabInstance:
       propertyPath: ammunitionText
       value: 
       objectReference: {fileID: 999536278}
+    - target: {fileID: 3142521787803281871, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: persons.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3142521788233766212, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: m_RootOrder
       value: 1

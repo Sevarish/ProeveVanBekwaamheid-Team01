@@ -6,6 +6,7 @@ using TMPro;
 
 public class PlayerInput : MonoBehaviour
 {
+
     [SerializeField] Player player; //The parent object of the entire player.
     [SerializeField]
     GameObject playerVisual; //The visual part of the player which rotates.
@@ -221,6 +222,7 @@ public class PlayerInput : MonoBehaviour
             UpdateUI();
         }   
     }
+
 
     private void ReloadComplete()
     {
