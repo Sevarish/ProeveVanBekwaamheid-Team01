@@ -45,6 +45,7 @@ public class EnemyAI : MonoBehaviour, Damageable
 
 
     private Vector3 walkpoint;
+    private Vector3 flashedSight;
 
     [HideInInspector]
     public bool foundPlayer,
@@ -74,7 +75,6 @@ public class EnemyAI : MonoBehaviour, Damageable
         attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
         StartCoroutine(GetDelayedPos());
-        StartCoroutine(FlashedEffect());
         Rigidbody[] allRigids = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rigid in allRigids)
         {
@@ -88,46 +88,23 @@ public class EnemyAI : MonoBehaviour, Damageable
         while (true)
         {
             delayedPlayerPos = player.transform.position;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.5f  );
         }
-    }
-
-    public IEnumerator FlashedEffect()
-    {
-        agent.SetDestination(transform.position);
-        yield return new WaitForSeconds(2f);
     }
 
     public void Flashed()
     {
-        if (!walkpointFlashed)
-        {
-            float randomX = UnityEngine.Random.Range(-2, 2);
-            float randomZ = UnityEngine.Random.Range(-2, 2);
-            walkpoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-            if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointFlashed = true;
-
-            FlashedBehaviour();
-        }
+        agent.isStopped = true;
+        Fov.enabled = false;
+        Invoke("FlashedEffect", 2f);
     }
 
-    private void FlashedBehaviour()
+    public void FlashedEffect()
     {
-        if (walkpointFlashed)
-        {
-            print("test");
-            agent.SetDestination(walkpoint);
-
-            Vector3 distanceToWalkPoint = transform.position - walkpoint;
-
-            if (distanceToWalkPoint.magnitude < 1f) { walkpointFlashed = false; }
-        }
-
-        if (alertedPatrolling == false)
-        {
-            alertedPatrolling = true;
-        }
+        agent.isStopped = false;
+        agent.SetDestination(player.position);
+        Fov.enabled = true;
+        alertedPatrolling = true;
     }
 
     public void FixedUpdate()
