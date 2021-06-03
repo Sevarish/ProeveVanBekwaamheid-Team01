@@ -14984,6 +14984,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 6470159b7fe81a9408ef7494858c141f, type: 3}
     - target: {fileID: 3142521787803281871, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: interactRange
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142521787803281871, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: ammunitionText
       value: 
       objectReference: {fileID: 999536278}
@@ -15044,16 +15048,32 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 3142521788594005500, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: isTurnedOn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142521788594005500, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: flashLightUI
       value: 
       objectReference: {fileID: 1202880191}
+    - target: {fileID: 3142521788594005502, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3142521788594005503, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: m_SpotAngle
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5135097163222912472, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: throwForce
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5135097163222912472, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: grenades.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5135097163222912472, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: startAmountGrenades
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5135097163222912472, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: grenades.Array.data[0]
