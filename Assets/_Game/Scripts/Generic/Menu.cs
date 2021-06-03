@@ -14,7 +14,7 @@ public class Menu : MonoBehaviour
     public Slider progressSlider;
     public TMP_Text text;
 
-    public string controlsSceneName = "Controls", gameName = "Game";
+    public string controlsSceneName = "Controls", gameName = "Game", mainMenuName = "MainMenu";
 
     private void Start()
     {
@@ -24,6 +24,11 @@ public class Menu : MonoBehaviour
     public void GoToControlScheme()
     {
         SceneManager.LoadScene(controlsSceneName);
+    }
+
+    public void GoToMenu()
+    {
+        SceneManager.LoadScene(mainMenuName);
     }
 
     public void QuitGame()
