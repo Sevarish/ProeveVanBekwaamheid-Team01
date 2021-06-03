@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Art Assets/Models/AK_47/AK-47.obj.meta
 guid: 8e1df871ad97f004cb0e149d713d5f10
+=======
+guid: 35fda7d2ff869f44f891d4ce00c48761
+>>>>>>> 1d54856 (DESPAIR):Assets/Art Assets/Models/CargoShip/Vrachtship_LP_004.fbx.meta
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
