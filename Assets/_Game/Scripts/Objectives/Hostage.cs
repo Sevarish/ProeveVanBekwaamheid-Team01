@@ -18,6 +18,7 @@ public class Hostage : MonoBehaviour, Interactable
     public NavMeshAgent agent;
     public Vector3 despawnPos;
     public Animator anim;
+    public Light light;
 
     private Transform currentInteractObject;
 
@@ -72,6 +73,7 @@ public class Hostage : MonoBehaviour, Interactable
             }
             if(releaseTime <= 0)
             {
+                light.enabled = false;
                 anim.SetBool("isFree", true);
                 currentInteractObject = null;
                 SavedHostage?.Invoke();
