@@ -15,10 +15,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     //a point with the current ground compared to scene view.
     //Game view cannot be used for this!
 
-    public NavMeshAgent agent;
-
-    //[SerializeField]
-    //private Animator enemyAnim;
+    public NavMeshAgent agent;  
+    public Animator enemyAnim;
 
     [SerializeField]
     private float _sightDistance,
@@ -30,33 +28,44 @@ public class EnemyAI : MonoBehaviour, Damageable
     private bool playerInsideRange,
                  playerInsideAttackRange,
                  alreadyAttacked,
-                 walkpointSet;
+                 walkpointSet,
+                 walkpointFlashed;
 
     [SerializeField]
     private Transform player;
+    private Vector3 delayedPlayerPos;
+    public float delayPosTime;
 
     [SerializeField]
     private LayerMask whatIsPlayer,
                       whatIsGround;
 
+    [HideInInspector]
     public EnemyState enemyState = EnemyState.patrolling;
 
 
     private Vector3 walkpoint;
+    private Vector3 flashedSight;
 
     [HideInInspector]
     public bool foundPlayer,
                 alertedPatrolling;
 
-    // already added for the damaging/death system
-    private int health = 100, damage = 10;
+    private int health = 100, damage = 25;
 
     public List<Vector3> points = new List<Vector3>();
     private int destPoint = 0;
 
     public Action EnemyDeath;
-    public EnemyFov Fov;
-    public AssaultRifle attacking;
+    private EnemyFov Fov;
+    private AssaultRifle attacking;
+
+    public AudioClip[] hurtSfx;
+    public AudioClip[] deathSfx;
+    public List<Rigidbody> physicObjects = new List<Rigidbody>();
+    private int playerHealthOnKill = 5;
+    private bool enemyIsDead = false;
+    private int deadEnemyLayer = 8;
 
     private void Awake()
     {
@@ -65,6 +74,37 @@ public class EnemyAI : MonoBehaviour, Damageable
         Fov = GetComponent<EnemyFov>();
         attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
+        StartCoroutine(GetDelayedPos());
+        Rigidbody[] allRigids = gameObject.GetComponentsInChildren<Rigidbody>();
+        foreach (Rigidbody rigid in allRigids)
+        {
+            physicObjects.Add(rigid);
+            rigid.isKinematic = true;
+        }
+    }
+
+    private IEnumerator GetDelayedPos()
+    {
+        while (true)
+        {
+            delayedPlayerPos = player.transform.position;
+            yield return new WaitForSeconds(0.5f  );
+        }
+    }
+
+    public void Flashed()
+    {
+        agent.isStopped = true;
+        Fov.enabled = false;
+        Invoke("FlashedEffect", 2f);
+    }
+
+    public void FlashedEffect()
+    {
+        agent.isStopped = false;
+        agent.SetDestination(player.position);
+        Fov.enabled = true;
+        alertedPatrolling = true;
     }
 
     public void FixedUpdate()
@@ -74,34 +114,25 @@ public class EnemyAI : MonoBehaviour, Damageable
             case EnemyState.patrolling:
                 playerInsideRange = Physics.CheckSphere(transform.position, _sightDistance, whatIsPlayer);
                 playerInsideAttackRange = Physics.CheckSphere(transform.position, _attackRange, whatIsPlayer);
-                //if (!EnemyFov.isInFov) {  }
                 if (alertedPatrolling) Patroling();
                 if (!playerInsideRange && !foundPlayer) Fov.isInFov = false;
                 if (Fov.isInFov) ChasePlayer();
                 if (agent.velocity.magnitude < 0.15f) walkpointSet = false;
                 break;
-            // TO DO:
-            // set the checkpoint function as a state
 
             case EnemyState.checkpoints:
+                Checkpoints();
                 break;
-                // NOTE:
-                // deleted the rotating and finished patrolling state
-                // had both to prevent that the enemy gets stuck on a corner.
-                // now when his speed is under a certain value he will choose a new path.
             default:
                 break;
         }
-
         if (!agent.pathPending && agent.remainingDistance < 0.5f && !alertedPatrolling)
             Checkpoints();
     }
 
     public void Checkpoints()
     {
-        // TO DO:
-        // Add Walking animation
-        //enemyAnim.Play("Walking");
+        enemyAnim.SetBool("isShooting", false);
 
         // Returns if no points have been set up
         if (points.Count == 0)
@@ -118,10 +149,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     {
         agent.speed = walkSpeed;
 
-        // TO DO:
-        // Add patrolling animation
         //enemyAnim.Play("Patroling");
-
+        enemyAnim.SetBool("isShooting", false);
 
         if (!walkpointSet) SearchWalkPoint();
         if (walkpointSet) agent.SetDestination(walkpoint);
@@ -143,48 +172,36 @@ public class EnemyAI : MonoBehaviour, Damageable
         if (Physics.Raycast(walkpoint, -transform.up, 2f, whatIsGround)) walkpointSet = true;
     }
 
-    //public void ChaseEnemy()
-    //{
-    //    agent.SetDestination(enemy.position);
-    //}
     public void ChasePlayer()
     {
-        if (!foundPlayer)
-        {
-            //SoundManager.PlaySound("Shout");
-        }
         foundPlayer = true;
         if (playerInsideRange) Fov.isInFov = true;
         else { foundPlayer = false; Fov.isInFov = false; }
         agent.speed = runSpeed;
-        agent.SetDestination(player.position);
-        // enemyAnim.Play("Running");
 
-        //TO DO: 
-        //set the variable for the playerInsideAttackRange in the editor
+        agent.SetDestination(player.position);
+
         if (playerInsideAttackRange)
         {
-            //Fov.dropBody = true;
-            //EnemyDeath?.Invoke();
-            //gameObject.SetActive(false);
             Attacking();
         }
-
+        
     }
 
     public void Attacking()
     {
-        float timeBetweenAttacks = 1f;
-        //TO DO: 
-        //Let the enemy shoot with a weapon towards the player
-        if (!alreadyAttacked)
-        {
-            attacking.Shoot();
-            Debug.Log("Enemy is shooting");
+        enemyAnim.SetBool("isShooting", true);
+        agent.SetDestination(transform.position);
+        transform.LookAt(delayedPlayerPos);
 
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
+         float timeBetweenAttacks = 1f;
+         if (!alreadyAttacked)
+         {
+             attacking.Shoot();
+
+             alreadyAttacked = true;
+             Invoke(nameof(ResetAttack), timeBetweenAttacks);
+         }
     }
 
     private void ResetAttack()
@@ -194,17 +211,39 @@ public class EnemyAI : MonoBehaviour, Damageable
     
     private void DestroyEnemy()
     {
-        Destroy(gameObject);
-        // add here the part where the death body will be dropped at the death of the enemy
+        foreach (Rigidbody physicToAdd in physicObjects)
+        {
+            physicToAdd.isKinematic = false;
+            //physicToAdd.AddForce(new Vector3(0, -1, 0), ForceMode.Impulse);
+            physicToAdd.velocity = new Vector3(0,0,0);
+            physicToAdd.transform.gameObject.layer = deadEnemyLayer;
+        }
+        enemyAnim.enabled = false;
+        Fov.enabled = false;
+        enabled = false;
+        
+
+        // restore player health
+        if (!enemyIsDead)
+        {
+            player.GetComponent<Player>().HealPlayer(playerHealthOnKill);
+            enemyIsDead = true;
+        }
     }
 
     void Damageable.TakeDamage()
     {
+        agent.SetDestination(player.transform.position);
+
         health -= damage;
 
         if (health <= 0)
         {
+            SoundManager.Instance.RandomSoundEffect(deathSfx);
             Invoke(nameof(DestroyEnemy), 0.5f);
+        } else
+        {
+            SoundManager.Instance.RandomSoundEffect(hurtSfx);
         }
     }
 }

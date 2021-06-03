@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,8 @@ public class EnemyPositions : MonoBehaviour
     public static GameObject NodeToSpawn;
 
     [MenuItem("AI/AddPointToCurrentAI %9", false, 1)]
+
+    //[MenuItem("AI/AddPointToCurrentAI %9", false, 1)]
     public static void AddNewEnemiePoint()
     {
         SceneView scene = SceneView.lastActiveSceneView;
@@ -62,3 +65,4 @@ public class EnemyPositions : MonoBehaviour
         }
     }
 }
+#endif
