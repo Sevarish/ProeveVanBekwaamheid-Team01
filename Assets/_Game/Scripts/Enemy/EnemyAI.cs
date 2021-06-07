@@ -66,6 +66,7 @@ public class EnemyAI : MonoBehaviour, Damageable
     private int playerHealthOnKill = 5;
     private bool enemyIsDead = false;
     private int deadEnemyLayer = 8;
+    private Collider collider;
 
     private void Awake()
     {
@@ -75,6 +76,7 @@ public class EnemyAI : MonoBehaviour, Damageable
         attacking = GetComponent<AssaultRifle>();
         //enemyAnim = GetComponent<Animator>();
         StartCoroutine(GetDelayedPos());
+        collider = GetComponent<Collider>();
         Rigidbody[] allRigids = gameObject.GetComponentsInChildren<Rigidbody>();
         foreach (Rigidbody rigid in allRigids)
         {
@@ -214,10 +216,11 @@ public class EnemyAI : MonoBehaviour, Damageable
         foreach (Rigidbody physicToAdd in physicObjects)
         {
             physicToAdd.isKinematic = false;
-            //physicToAdd.AddForce(new Vector3(0, -1, 0), ForceMode.Impulse);
             physicToAdd.velocity = new Vector3(0,0,0);
             physicToAdd.transform.gameObject.layer = deadEnemyLayer;
         }
+        agent.enabled = false;
+        collider.enabled = false;
         enemyAnim.enabled = false;
         Fov.enabled = false;
         enabled = false;
