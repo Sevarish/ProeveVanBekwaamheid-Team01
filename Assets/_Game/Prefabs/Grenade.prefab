@@ -127,8 +127,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fuseTime: 1
   thisGrenadeType: 0
-  explosionRadius: 10
+  explosionRadius: 20
   explosionForce: 6
   fuseOnAwake: 1
   fuseOnCollision: 0
   applyPhysicsToRigidbodys: 1
+  flashEffect: {fileID: 7693125169573760838, guid: f52a84a1c8ebe7d44b8af03fa437f74b, type: 3}

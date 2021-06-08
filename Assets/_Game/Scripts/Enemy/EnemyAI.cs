@@ -226,10 +226,10 @@ public class EnemyAI : MonoBehaviour, Damageable
         enabled = false;
         
 
-        // restore player health
+        // restore player ammo
         if (!enemyIsDead)
         {
-            player.GetComponent<Player>().HealPlayer(playerHealthOnKill);
+            player.GetComponentInChildren<PlayerInput>().AddAmmoToPlayer();
             enemyIsDead = true;
         }
     }

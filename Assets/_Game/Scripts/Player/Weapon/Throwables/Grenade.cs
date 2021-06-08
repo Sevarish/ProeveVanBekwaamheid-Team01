@@ -24,6 +24,8 @@ public class Grenade : MonoBehaviour
     public bool applyPhysicsToRigidbodys = false;
     private Rigidbody applyPhysics;
 
+    public GameObject flashEffect;
+
     private void Awake()
     {
         applyPhysics = gameObject.GetComponent<Rigidbody>();
@@ -68,6 +70,7 @@ public class Grenade : MonoBehaviour
                 hit.transform.GetComponent<Rigidbody>()?.AddForce((hit.transform.position - transform.position) * explosionForce, ForceMode.Impulse);
             }
         }
+        Instantiate(flashEffect, transform.position, transform.rotation);
         Destroy(gameObject);
     }
 

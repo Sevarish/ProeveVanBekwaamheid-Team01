@@ -224,6 +224,14 @@ public class PlayerInput : MonoBehaviour
         }   
     }
 
+    public void AddAmmoToPlayer()
+    {
+        AssaultRifle ar = FindObjectOfType<AssaultRifle>();
+        ar.clips++;
+        ar.CalculateAmmo();
+        UpdateUI();
+    }
+
 
     private void ReloadComplete()
     {

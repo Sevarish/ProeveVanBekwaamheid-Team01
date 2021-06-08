@@ -1121,6 +1121,7 @@ MonoBehaviour:
   groundLayer: 7
   interactRange: 4
   interactButton: 102
+  isReloading: 0
   playerAnim: {fileID: 6899068631387944387}
   ammunitionText: {fileID: 0}
   reloadSlider: {fileID: 0}
@@ -3169,6 +3170,10 @@ MonoBehaviour:
   grenades: []
   startAmountGrenades: 200
   throwForce: 20
+  grenadeSprites:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &7619904581426383245
 GameObject:
   m_ObjectHideFlags: 0

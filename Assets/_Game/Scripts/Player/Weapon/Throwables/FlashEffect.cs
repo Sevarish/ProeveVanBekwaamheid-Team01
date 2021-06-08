@@ -13,15 +13,15 @@ public class FlashEffect : MonoBehaviour
         light = GetComponent<Light>();
         secondsToFlash *= 60;
 
-        light.intensity = 0;
+        light.intensity = 100;
     }
     void Update()
     {
-        light.intensity++;
+        light.intensity--;
 
-        if (light.intensity > secondsToFlash)
+        if (light.intensity < secondsToFlash)
         {
-            light.gameObject.SetActive(false);
+            Destroy(this.gameObject);
         }
     }
 }

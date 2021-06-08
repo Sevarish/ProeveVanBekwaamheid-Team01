@@ -26,6 +26,11 @@ public class Player : MonoBehaviour, Damageable
     private void Start()
     {
         health = maxHealth;
+        Hostage[] hostages = GameObject.FindObjectsOfType<Hostage>();
+        foreach(Hostage hostage in hostages)
+        {
+            hostage.SavedHostage += HealPlayer;
+        }
     }
 
     private void SetVision()
@@ -81,6 +86,12 @@ public class Player : MonoBehaviour, Damageable
     public void HealPlayer(int heal)
     {
         health += heal;
+        UpdateHealthUI(health);
+    }
+
+    public void HealPlayer()
+    {
+        health += maxHealth;
         UpdateHealthUI(health);
     }
 
