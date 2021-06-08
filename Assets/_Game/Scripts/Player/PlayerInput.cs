@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
 
 
     private int currentHK416Clip, currentX26Clip, fullHK416Cap;
-    private bool isReloading = false;
+    public bool isReloading = false;
     private float reloadTimer, reloadTimeCap = 2.5f;
     private float shootTimerAR = 0.12f, shootTimerTA = 10;
     private bool isMoving = false;
@@ -106,7 +106,7 @@ public class PlayerInput : MonoBehaviour
                 player.HK416.StopPtcl();
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && !isReloading && fullHK416Cap > 0)
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading && fullHK416Cap > 0 && currentHK416Clip != player.HK416.clipCapacity)
             {
                 isReloading = true;
             }
@@ -197,13 +197,13 @@ public class PlayerInput : MonoBehaviour
     //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
     private void Shoot()
     {
-        playerAnim.SetBool("isShooting", true);
-        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0 )
+        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0)
         {
+            playerAnim.SetBool("isShooting", true);
             player.HK416.Shoot(); //Assault Rifle
             player.HK416.StartPtcl();
             currentHK416Clip--;
-            if (currentHK416Clip == 0)
+            if (currentHK416Clip == 0 && currentHK416Clip != player.HK416.clipCapacity)
             {
                 if (fullHK416Cap > 0)
                 {
@@ -216,6 +216,7 @@ public class PlayerInput : MonoBehaviour
         }
         if (player.currentWeapon == 1 && shootTimerTA > player.X26.GetFireRate() && currentX26Clip > 0)
         {
+            playerAnim.SetBool("isShooting", true);
             player.X26.Shoot(); //Taser
             currentX26Clip--;
             shootTimerTA = 0;
