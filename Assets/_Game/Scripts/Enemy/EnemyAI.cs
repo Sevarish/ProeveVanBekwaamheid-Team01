@@ -249,5 +249,22 @@ public class EnemyAI : MonoBehaviour, Damageable
             SoundManager.Instance.RandomSoundEffect(hurtSfx);
         }
     }
+
+    public void TakeDamage(int damage)
+    {
+        agent.SetDestination(player.transform.position);
+
+        health -= damage;
+
+        if (health <= 0)
+        {
+            SoundManager.Instance.RandomSoundEffect(deathSfx);
+            Invoke(nameof(DestroyEnemy), 0.5f);
+        }
+        else
+        {
+            SoundManager.Instance.RandomSoundEffect(hurtSfx);
+        }
+    }
 }
 

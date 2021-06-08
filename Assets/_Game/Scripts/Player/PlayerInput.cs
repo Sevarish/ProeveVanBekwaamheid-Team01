@@ -25,14 +25,14 @@ public class PlayerInput : MonoBehaviour
     private float interactRange = 4;
 
     [SerializeField]
-    private KeyCode interactButton = KeyCode.Space;
+    private KeyCode interactButton = KeyCode.F;
 
     //Keyboard/Mouse
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
     moveUp = KeyCode.W,
     moveDown = KeyCode.S,
-    switchWeapon = KeyCode.LeftControl;
+    switchWeapon = KeyCode.Space;
     //Controller
     private readonly string conMoveSide = "LR", //Left Right for walking
     conMoveFrontBack = "FB", //Front Back for walking
@@ -66,7 +66,24 @@ public class PlayerInput : MonoBehaviour
 
         UpdateUI();
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
+    {
+        if (!controller)
+        { //When Mouse and Keyboard mode is active (Controller=talse)
+            if (Input.GetKey(moveLeft)) { MoveLeft(); }
+            if (Input.GetKey(moveRight)) { MoveRight(); }
+            if (Input.GetKey(moveUp)) { MoveUp(); }
+            if (Input.GetKey(moveDown)) { MoveDown(); }
+
+            if (Input.GetKey(moveDown) || Input.GetKey(moveUp) || Input.GetKey(moveLeft) || Input.GetKey(moveRight))
+            {
+                playerAnim.SetBool("isWalking", true);
+            }
+            else playerAnim.SetBool("isWalking", false);
+        }
+        }
+    void Update()
     {
         shootTimerAR += Time.deltaTime;
         shootTimerTA += Time.deltaTime;
@@ -74,16 +91,7 @@ public class PlayerInput : MonoBehaviour
         UpdateSlider();
 
         if (!controller)
-        { //When Mouse and Keyboard mode is active (Controller=talse)
-            if (Input.GetKey(moveLeft)) { MoveLeft();}
-            if (Input.GetKey(moveRight)) { MoveRight();}
-            if (Input.GetKey(moveUp)) { MoveUp();}
-            if (Input.GetKey(moveDown)) { MoveDown();}
-
-            if (Input.GetKey(moveDown) || Input.GetKey(moveUp) || Input.GetKey(moveLeft) || Input.GetKey(moveRight))
-            {
-                playerAnim.SetBool("isWalking", true);
-            } else playerAnim.SetBool("isWalking", false);
+        {
             Aim();
 
             if (Input.GetKeyDown(switchWeapon) && !isReloading)
