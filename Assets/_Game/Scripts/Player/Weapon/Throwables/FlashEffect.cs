@@ -6,11 +6,12 @@ public class FlashEffect : MonoBehaviour
 {
     private new Light light;
 
-    public int framesLit = 60;
+    public float secondsToFlash = 1;
 
     private void Start()
     {
         light = GetComponent<Light>();
+        secondsToFlash *= 60;
 
         light.intensity = 0;
     }
@@ -18,7 +19,7 @@ public class FlashEffect : MonoBehaviour
     {
         light.intensity++;
 
-        if (light.intensity > framesLit)
+        if (light.intensity > secondsToFlash)
         {
             light.gameObject.SetActive(false);
         }
