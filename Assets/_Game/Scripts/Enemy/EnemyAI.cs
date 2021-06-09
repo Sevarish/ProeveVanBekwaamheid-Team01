@@ -97,15 +97,16 @@ public class EnemyAI : MonoBehaviour, Damageable
     public void Flashed()
     {
         agent.isStopped = true;
-        Fov.enabled = false;
+        Fov.flashed = true;
+        Fov.FlashFOV();
         Invoke("FlashedEffect", 2f);
     }
 
     public void FlashedEffect()
     {
         agent.isStopped = false;
-        agent.SetDestination(player.position);
-        Fov.enabled = true;
+        Fov.flashed = false;
+        Fov.FlashFOV();
         alertedPatrolling = true;
     }
 
