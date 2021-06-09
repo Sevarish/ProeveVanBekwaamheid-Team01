@@ -5150,6 +5150,10 @@ PrefabInstance:
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2756678504423927257, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 527696fc6f257724e9beab050f9e3b58, type: 3}
+    - target: {fileID: 2756678504423927257, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
       propertyPath: m_Color.a
       value: 0.5882353
       objectReference: {fileID: 0}
@@ -5162,8 +5166,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2756678504423927259, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2756678504423927259, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2756678504423927259, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -248
+      value: -225.9
       objectReference: {fileID: 0}
     - target: {fileID: 2756678504467617746, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
       propertyPath: m_Color.a
@@ -5178,8 +5190,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2756678504467617748, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2756678504467617748, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 2756678504467617748, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -388
+      value: -364.6
       objectReference: {fileID: 0}
     - target: {fileID: 2756678504467617749, guid: 8be945815b411df418bba6bfd04729d3, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
