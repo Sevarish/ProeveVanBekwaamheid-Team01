@@ -12952,11 +12952,11 @@ PrefabInstance:
       objectReference: {fileID: 2222369301544099345}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[0].x
-      value: -26.145012
+      value: -30.29169
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[0].y
@@ -12964,11 +12964,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[0].z
-      value: 73.85848
+      value: 17.856602
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[1].x
-      value: -37.085682
+      value: -30.29169
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[1].y
@@ -12976,7 +12976,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3403852366267542740, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: points.Array.data[1].z
-      value: 56.359848
+      value: 17.856602
       objectReference: {fileID: 0}
     - target: {fileID: 6229733668459750290, guid: 17170915dfa2acc4b8bf99be3c53a808, type: 3}
       propertyPath: player
@@ -15470,6 +15470,34 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1320153687}
     - target: {fileID: 5135097163222912472, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenadeSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 876693238}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: throwForce
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenades.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenades.Array.data[0]
+      value: 
+      objectReference: {fileID: 7959298838370294567, guid: 6c1fef160ab5d404392eac2d50abff87, type: 3}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenadeSprites.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenadeSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 1937193594}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
+      propertyPath: grenadeSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 1320153687}
+    - target: {fileID: 7648528445913350753, guid: d2a98b1f9b25da14e8c448609eeda77c, type: 3}
       propertyPath: grenadeSprites.Array.data[2]
       value: 
       objectReference: {fileID: 876693238}
