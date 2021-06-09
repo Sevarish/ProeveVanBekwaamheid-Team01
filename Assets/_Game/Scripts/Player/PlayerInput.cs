@@ -25,14 +25,14 @@ public class PlayerInput : MonoBehaviour
     private float interactRange = 4;
 
     [SerializeField]
-    private KeyCode interactButton = KeyCode.Space;
+    private KeyCode interactButton = KeyCode.F;
 
     //Keyboard/Mouse
     private readonly KeyCode moveLeft = KeyCode.A,
     moveRight = KeyCode.D,
     moveUp = KeyCode.W,
     moveDown = KeyCode.S,
-    switchWeapon = KeyCode.LeftControl;
+    switchWeapon = KeyCode.Space;
     //Controller
     private readonly string conMoveSide = "LR", //Left Right for walking
     conMoveFrontBack = "FB", //Front Back for walking
@@ -43,7 +43,7 @@ public class PlayerInput : MonoBehaviour
 
 
     private int currentHK416Clip, currentX26Clip, fullHK416Cap;
-    private bool isReloading = false;
+    public bool isReloading = false;
     private float reloadTimer, reloadTimeCap = 2.5f;
     private float shootTimerAR = 0.12f, shootTimerTA = 10;
     private bool isMoving = false;
@@ -66,7 +66,24 @@ public class PlayerInput : MonoBehaviour
 
         UpdateUI();
     }
-    void FixedUpdate()
+
+    private void FixedUpdate()
+    {
+        if (!controller)
+        { //When Mouse and Keyboard mode is active (Controller=talse)
+            if (Input.GetKey(moveLeft)) { MoveLeft(); }
+            if (Input.GetKey(moveRight)) { MoveRight(); }
+            if (Input.GetKey(moveUp)) { MoveUp(); }
+            if (Input.GetKey(moveDown)) { MoveDown(); }
+
+            if (Input.GetKey(moveDown) || Input.GetKey(moveUp) || Input.GetKey(moveLeft) || Input.GetKey(moveRight))
+            {
+                playerAnim.SetBool("isWalking", true);
+            }
+            else playerAnim.SetBool("isWalking", false);
+        }
+        }
+    void Update()
     {
         shootTimerAR += Time.deltaTime;
         shootTimerTA += Time.deltaTime;
@@ -74,16 +91,7 @@ public class PlayerInput : MonoBehaviour
         UpdateSlider();
 
         if (!controller)
-        { //When Mouse and Keyboard mode is active (Controller=talse)
-            if (Input.GetKey(moveLeft)) { MoveLeft();}
-            if (Input.GetKey(moveRight)) { MoveRight();}
-            if (Input.GetKey(moveUp)) { MoveUp();}
-            if (Input.GetKey(moveDown)) { MoveDown();}
-
-            if (Input.GetKey(moveDown) || Input.GetKey(moveUp) || Input.GetKey(moveLeft) || Input.GetKey(moveRight))
-            {
-                playerAnim.SetBool("isWalking", true);
-            } else playerAnim.SetBool("isWalking", false);
+        {
             Aim();
 
             if (Input.GetKeyDown(switchWeapon) && !isReloading)
@@ -106,7 +114,7 @@ public class PlayerInput : MonoBehaviour
                 player.HK416.StopPtcl();
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && !isReloading && fullHK416Cap > 0)
+            if (Input.GetKeyDown(KeyCode.R) && !isReloading && fullHK416Cap > 0 && currentHK416Clip != player.HK416.clipCapacity)
             {
                 isReloading = true;
             }
@@ -197,13 +205,13 @@ public class PlayerInput : MonoBehaviour
     //The general function for shooting both the primary (Assault Rifle) and secondary weapon (Taser).
     private void Shoot()
     {
-        playerAnim.SetBool("isShooting", true);
-        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0 )
+        if (player.currentWeapon == 0 && shootTimerAR > player.HK416.GetFireRate() && !isReloading && currentHK416Clip > 0)
         {
+            playerAnim.SetBool("isShooting", true);
             player.HK416.Shoot(); //Assault Rifle
             player.HK416.StartPtcl();
             currentHK416Clip--;
-            if (currentHK416Clip == 0)
+            if (currentHK416Clip == 0 && currentHK416Clip != player.HK416.clipCapacity)
             {
                 if (fullHK416Cap > 0)
                 {
@@ -216,11 +224,20 @@ public class PlayerInput : MonoBehaviour
         }
         if (player.currentWeapon == 1 && shootTimerTA > player.X26.GetFireRate() && currentX26Clip > 0)
         {
+            playerAnim.SetBool("isShooting", true);
             player.X26.Shoot(); //Taser
             currentX26Clip--;
             shootTimerTA = 0;
             UpdateUI();
         }   
+    }
+
+    public void AddAmmoToPlayer()
+    {
+        AssaultRifle ar = FindObjectOfType<AssaultRifle>();
+        ar.clips++;
+        ar.CalculateAmmo();
+        UpdateUI();
     }
 
 

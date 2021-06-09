@@ -30,7 +30,8 @@ public class EnemyFov : MonoBehaviour
     [HideInInspector]
     public bool isInFov = false,
                 dropBody,
-                inAlertFOV = false;
+                inAlertFOV = false,
+                flashed;
 
     [SerializeField]
     private GameObject body;
@@ -196,7 +197,7 @@ public class EnemyFov : MonoBehaviour
     {
         InFOV(transform, player, maxAngle, maxRadius, alertRadius);
 
-        if (isInFov && AI.foundPlayer || chasingEnemy)
+        if (isInFov && AI.foundPlayer|| chasingEnemy)
         {
             maxAngle = foundPlayerAngle;
             maxRadius = foundPlayerRadius;
@@ -214,5 +215,16 @@ public class EnemyFov : MonoBehaviour
     {
         maxRadius = originalRadius;
         maxAngle = originalAngle;
+    }
+
+    public void FlashFOV()
+    {
+        float oldRadius = maxRadius;
+        float oldAngle = maxAngle;
+        if (flashed)
+        {
+            maxRadius = 0f;
+            maxAngle = 0f;
+        }else { maxRadius = oldRadius; maxAngle = oldAngle; }
     }
 }

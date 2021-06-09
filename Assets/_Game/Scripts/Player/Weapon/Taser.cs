@@ -12,14 +12,16 @@ public class Taser : MonoBehaviour
     public int clipCapacity = 3;
     public void Shoot()
     {
-        //Debug.DrawRay(playerEmitter.transform.position, (targetPoint.transform.position - playerEmitter.transform.position) * 20, Color.yellow, 1);
         //Casts a raycast from the playerEmitter towards the crosshair (targetPoint).
         RaycastHit hit;
-        if (Physics.Raycast(playerEmitter.transform.position, (targetPoint.transform.position - playerEmitter.transform.position) * 20, out hit, Mathf.Infinity))
+        Vector3 cursorPos = GameObject.FindObjectOfType<CursorController>().transform.position;
+        Vector3 direction = cursorPos - playerEmitter.transform.position;
+        Debug.DrawRay(playerEmitter.transform.position, direction * 20, Color.yellow, 1);
+        if (Physics.Raycast(playerEmitter.transform.position, direction  * 20, out hit, Mathf.Infinity))
         {
             if (hit.transform.tag == "Enemy")
             {
-                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage();
+                hit.transform.gameObject.GetComponent<Damageable>().TakeDamage(1000);
             }
         }
     }

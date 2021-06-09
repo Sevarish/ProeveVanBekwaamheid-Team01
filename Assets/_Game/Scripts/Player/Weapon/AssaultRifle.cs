@@ -20,6 +20,11 @@ public class AssaultRifle : MonoBehaviour
 
     private void Awake()
     {
+        CalculateAmmo();
+    }
+
+    public void CalculateAmmo()
+    {
         fullCapacity = clipCapacity * clips;
     }
 
