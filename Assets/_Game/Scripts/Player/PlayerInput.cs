@@ -94,11 +94,11 @@ public class PlayerInput : MonoBehaviour
         {
             Aim();
 
-            if (Input.GetKeyDown(switchWeapon) && !isReloading)
-            {
-                player.SwitchWeapon();
-                UpdateUI();
-            }
+            //if (Input.GetKeyDown(switchWeapon) && !isReloading)
+            //{
+            //    player.SwitchWeapon();
+            //    UpdateUI();
+            //}
 
             if (Input.GetKeyDown(interactButton))
             {
