@@ -68,6 +68,8 @@ public class EnemyAI : MonoBehaviour, Damageable
     private int deadEnemyLayer = 8;
     private Collider collider;
 
+    [SerializeField] private GameObject AmmoDrop;
+
     private void Awake()
     {
         player = GameObject.Find("Player").transform;
@@ -227,10 +229,10 @@ public class EnemyAI : MonoBehaviour, Damageable
         enabled = false;
         
 
-        // restore player ammo
+        //Drop Ammo Pack for Player
         if (!enemyIsDead)
         {
-            player.GetComponentInChildren<PlayerInput>().AddAmmoToPlayer();
+            Instantiate(AmmoDrop, new Vector3(transform.position.x, 0.1f, transform.position.z), transform.rotation);
             enemyIsDead = true;
         }
     }

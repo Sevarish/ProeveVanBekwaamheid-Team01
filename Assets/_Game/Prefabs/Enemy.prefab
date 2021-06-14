@@ -1401,6 +1401,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ae48d06ce450aca4d970e10e70234e2e, type: 3}
   - {fileID: 8300000, guid: a3000c0d3701dea4c9848482b54d31c7, type: 3}
   physicObjects: []
+  AmmoDrop: {fileID: 4256555721796582140, guid: 99b860777eb26a942bc8e8caf13bee76, type: 3}
 --- !u!114 &2168317921264873295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,6 +1429,7 @@ MonoBehaviour:
   isInFov: 0
   dropBody: 0
   inAlertFOV: 0
+  flashed: 0
   body: {fileID: 5745739807969408732, guid: f80ac209020c20e408786552f98668a4, type: 3}
 --- !u!114 &6244866946971728691
 MonoBehaviour:

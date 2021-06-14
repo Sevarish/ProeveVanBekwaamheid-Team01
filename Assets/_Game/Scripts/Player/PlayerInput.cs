@@ -235,8 +235,7 @@ public class PlayerInput : MonoBehaviour
     public void AddAmmoToPlayer()
     {
         AssaultRifle ar = FindObjectOfType<AssaultRifle>();
-        ar.clips++;
-        ar.CalculateAmmo();
+        fullHK416Cap += ar.clipCapacity;
         UpdateUI();
     }
 
